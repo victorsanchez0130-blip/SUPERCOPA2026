@@ -5,38 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supercopa - Sistema de Gestión</title>
     <style>
-        body {
-    /* Buscamos la imagen que acabas de subir a GitHub */
-    background-image: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('fondo.jpg');
-    
-    /* Centra el trofeo perfectamente en la pantalla */
-    background-position: center center;
-    
-    /* Evita que la imagen se repita como mosaico */
-    background-repeat: no-repeat;
-    
-    /* El truco mágico: hace que el fondo se quede fijo mientras el contenido se desliza */
-    background-attachment: fixed;
-    
-    /* Escala la imagen para cubrir toda la pantalla sin perder su proporción original */
-    background-size: cover;
-    
-    /* Color de respaldo por si el internet del usuario está lento y tarda en cargar la imagen */
-    background-color: #0b1329; 
-    
-    color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-}
         :root {
             --primary: #6366f1;
             --primary-hover: #4f46e5;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            --bg: #0b1329; 
+            /* Modificados a transparentes (Glassmorphism) */
+            --card-bg: rgba(255, 255, 255, 0.08); 
+            --card-border: rgba(255, 255, 255, 0.15);
+            --glass-blur: blur(10px);
+            /* Textos claros para el fondo oscuro */
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -47,26 +27,33 @@
         }
 
         body {
-            background-color: var(--bg);
+            background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url('fondo.jpg');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-color: var(--bg); 
             color: var(--text-main);
             padding-bottom: 60px;
         }
 
-        /* Navbar */
+        /* Navbar Transparente */
         nav {
-            background: var(--card-bg);
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 20px;
             font-weight: bold;
-            color: var(--primary);
+            color: #ffffff;
         }
 
         .btn-login, .btn-logout {
@@ -88,15 +75,6 @@
             max-width: 1000px;
             margin: 40px auto;
             padding: 0 20px;
-            /* Negro con 10% de opacidad */
-    background-color: rgba(0, 0, 0, 0.1) !important; 
-    
-    /* Efecto extra opcional: Añade un borde sutil para que el panel no se pierda del todo */
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    
-    /* Efecto extra opcional: Hace un desenfoque elegante al fondo (estilo vidrio esmerilado) */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
         }
 
         .header-section {
@@ -107,7 +85,7 @@
         .header-section h1 {
             font-size: 32px;
             margin-bottom: 8px;
-            color: #0f172a;
+            color: #ffffff;
         }
 
         .header-section p {
@@ -123,10 +101,13 @@
         }
 
         .tabs {
-            background: #e2e8f0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             padding: 4px;
             border-radius: 8px;
             display: flex;
+            border: 1px solid var(--border);
         }
 
         .tab-btn {
@@ -141,12 +122,12 @@
         }
 
         .tab-btn.active {
-            background: white;
-            color: var(--text-main);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Stats Dashboard */
+        /* Stats Dashboard Transparentes */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -156,29 +137,39 @@
 
         .stat-card {
             background: var(--card-bg);
-            border: 1px solid var(--border);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border-radius: 12px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .stat-icon { font-size: 24px; margin-bottom: 8px; color: var(--primary); }
-        .stat-number { font-size: 28px; font-weight: bold; color: #0f172a; margin-bottom: 4px; }
+        .stat-icon { font-size: 24px; margin-bottom: 8px; }
+        .stat-number { font-size: 28px; font-weight: bold; color: #ffffff; margin-bottom: 4px; }
         .stat-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
 
-        /* Controls Filters */
+        /* Buscador Transparente */
         .search-box {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid var(--border);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            color: #ffffff;
             border-radius: 10px;
             font-size: 15px;
             margin-bottom: 20px;
             outline: none;
         }
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
         .search-box:focus { border-color: var(--primary); }
 
+        /* Filtros */
         .filters {
             display: flex;
             gap: 10px;
@@ -188,13 +179,14 @@
         }
 
         .filter-btn {
-            background: white;
-            border: 1px solid var(--border);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
-            color: var(--text-muted);
+            color: #ffffff;
             transition: all 0.2s;
         }
 
@@ -204,7 +196,7 @@
             border-color: var(--primary);
         }
 
-        /* Grid de Tarjetas */
+        /* Grid de Tarjetas Transparentes */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -213,18 +205,23 @@
 
         .card {
             background: var(--card-bg);
-            border: 1px solid var(--border);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, border-color 0.2s;
             position: relative;
         }
-        .card:hover { transform: translateY(-3px); }
+        .card:hover { 
+            transform: translateY(-3px); 
+            border-color: rgba(255, 255, 255, 0.3);
+        }
 
         .card-img-container {
             height: 200px;
-            background: #f1f5f9;
+            background: rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -239,15 +236,15 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
+            background: var(--primary);
+            color: #ffffff;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: bold;
         }
 
-        .card-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; color: #0f172a; }
+        .card-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; color: #ffffff; }
         .card-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; }
 
         .card-metrics {
@@ -258,25 +255,26 @@
             font-size: 13px;
         }
         .metric-box { flex: 1; }
-        .metric-val { font-weight: bold; color: #0f172a; font-size: 15px; }
+        .metric-val { font-weight: bold; color: #ffffff; font-size: 15px; }
 
         .no-data { text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--text-muted); font-size: 16px; }
 
-        /* Ranking Table */
+        /* Ranking Table Transparente */
         .ranking-container {
             display: none;
-            background: white;
-            border: 1px solid var(--border);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        table { width: 100%; border-collapse: collapse; text-align: left; }
+        table { width: 100%; border-collapse: collapse; text-align: left; color: #ffffff; }
         th, td { padding: 14px 20px; border-bottom: 1px solid var(--border); }
-        th { background: #f8fafc; font-weight: 600; color: var(--text-muted); font-size: 13px; text-transform: uppercase; }
+        th { background: rgba(0, 0, 0, 0.2); font-weight: 600; color: var(--text-muted); font-size: 13px; text-transform: uppercase; }
         tr:last-child td { border-bottom: none; }
-        .rank-number { font-weight: bold; color: var(--primary); }
+        .rank-number { font-weight: bold; color: #5c7cfa; }
 
         /* Modal Login */
         .modal {
@@ -291,19 +289,21 @@
         }
 
         .modal-content {
-            background: white;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
             padding: 30px;
             border-radius: 16px;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
         }
 
         .modal-header { margin-bottom: 20px; text-align: center; }
-        .modal-header h2 { font-size: 24px; color: #0f172a; }
+        .modal-header h2 { font-size: 24px; color: #ffffff; }
         .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #475569; }
-        .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; outline: none; }
+        .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #94a3b8; }
+        .form-control { width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; outline: none; }
         .form-control:focus { border-color: var(--primary); }
         .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; }
         .btn-close { background: none; border: none; color: var(--text-muted); float: right; cursor: pointer; font-size: 18px; }
@@ -339,7 +339,6 @@
             </div>
         </div>
 
-        <!-- Dashboard Stats -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">👥</div>
@@ -358,7 +357,6 @@
             </div>
         </div>
 
-        <!-- Buscador y Filtros -->
         <input type="text" class="search-box" id="searchInp" placeholder="Buscar por nombre de colegio o docente..." oninput="filterData()">
         
         <div class="filters">
@@ -368,12 +366,10 @@
             <button class="filter-btn" onclick="filterCategory('PRIMARIA', this)">Primaria</button>
         </div>
 
-        <!-- Vista Grid -->
         <div class="cards-grid" id="cardsGrid">
             <div class="no-data">Cargando datos desde Google Sheets...</div>
         </div>
 
-        <!-- Vista Ranking -->
         <div class="ranking-container" id="rankingView">
             <table>
                 <thead>
@@ -387,13 +383,11 @@
                     </tr>
                 </thead>
                 <tbody id="rankingTableBody">
-                    <!-- Dinámico -->
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <button class="btn-close" onclick="closeModal()">✕</button>
@@ -416,13 +410,8 @@
     </div>
 
     <script>
-        // =========================================================================
-        // 🌟 CONFIGURACIÓN DE TU ENLACE DE GOOGLE SHEETS
-        // =========================================================================
-        // Reemplaza el texto de abajo con el enlace CSV que copiaste de tu Google Sheets
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv";
 
-        // Respaldo estático local por contingencia
         const backupData = [
             {"colegio": "I.E. NAMORA", "docente": "JHON ALVARADO", "foto": "https://i.postimg.cc/dV48hzwp/JA.jpg", "categoria": "B", "alumnos": 0, "puntos": 35},
             {"colegio": "I.E. EXPERIMENTAL UNS", "docente": "JOSE GALVEZ", "foto": "https://i.postimg.cc/fT1vC7Yc/JG.jpg", "categoria": "A", "alumnos": 10, "puntos": 20},
@@ -453,7 +442,6 @@
         let filterText = "";
         let filterCat = "TODOS";
 
-        // Función encargada de descargar y convertir el CSV remoto a objetos de JavaScript
         async function loadData() {
             if (GOOGLE_SHEET_CSV_URL && GOOGLE_SHEET_CSV_URL !== "AQUÍ_TU_LINK_DE_GOOGLE_SHEETS") {
                 try {
@@ -463,7 +451,6 @@
                     const lines = dataText.split(/\r?\n/);
                     const parsedData = [];
                     
-                    // Empezamos en la línea 1 para evitar los encabezados (Colegio, Docente, etc.)
                     for(let i = 1; i < lines.length; i++) {
                         if (!lines[i].trim()) continue;
                         
@@ -508,7 +495,6 @@
 
             calculateStats(filtered);
 
-            // Renderizar la grilla de Tarjetas
             const grid = document.getElementById('cardsGrid');
             grid.innerHTML = "";
             
@@ -541,7 +527,6 @@
                 });
             }
 
-            // Renderizar la tabla de Ranking (De Mayor a Menor Puntaje)
             const rankBody = document.getElementById('rankingTableBody');
             rankBody.innerHTML = "";
             let sortedRank = [...filtered].sort((a,b) => b.puntos - a.puntos);
@@ -551,7 +536,7 @@
                     <td class="rank-number">#${index + 1}</td>
                     <td style="font-weight:600;">${item.colegio}</td>
                     <td>${item.docente}</td>
-                    <td><span style="background:#f1f5f9; padding:2px 8px; border-radius:8px; font-size:12px;">${item.categoria}</span></td>
+                    <td><span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:8px; font-size:12px;">${item.categoria}</span></td>
                     <td>${item.alumnos}</td>
                     <td style="font-weight:bold; color:var(--primary);">${item.puntos} pts</td>
                 `;
