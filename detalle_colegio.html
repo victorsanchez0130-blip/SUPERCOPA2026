@@ -7,6 +7,7 @@
     <style>
         :root {
             --primary: #6366f1;
+            --primary-hover: #4f46e5;
             --bg: #0b1329; 
             --card-bg: rgba(255, 255, 255, 0.08); 
             --card-border: rgba(255, 255, 255, 0.15);
@@ -30,15 +31,15 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 750px;
         }
 
-        /* Tarjeta de Información */
+        /* Tarjeta de Información Principal */
         .info-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -48,6 +49,7 @@
             padding: 40px;
             text-align: center;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
         }
 
         .icon-shield {
@@ -75,7 +77,6 @@
             gap: 20px;
             border-top: 1px solid var(--border);
             padding-top: 30px;
-            margin-bottom: 30px;
         }
 
         .detail-box {
@@ -97,6 +98,86 @@
             font-size: 20px;
             font-weight: bold;
             color: #ffffff;
+        }
+
+        /* Sección de la Lista de Integrantes */
+        .students-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .students-section h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tabla de Alumnos */
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .students-table th, .students-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .students-table th {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .students-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .student-num {
+            font-weight: bold;
+            color: var(--primary);
+            width: 50px;
+        }
+
+        /* Botón de descarga de foto */
+        .btn-download {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn-download:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .actions {
+            text-align: center;
         }
 
         .btn-back {
@@ -136,13 +217,60 @@
                     <div class="detail-value" id="lblPuntos" style="color: #4ade80;">0 pts</div>
                 </div>
             </div>
+        </div>
 
+        <div class="students-section">
+            <h2>🎵 Lista de Alumnos e Instrumentos</h2>
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="student-num">N°</th>
+                        <th>Nombre del Alumno</th>
+                        <th>Instrumento</th>
+                        <th style="text-align: center;">Foto Personal</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                    <tr>
+                        <td class="student-num">1</td>
+                        <td style="font-weight: 500;">Carlos Mendoza Ruiz</td>
+                        <td>Tarola / Caja</td>
+                        <td style="text-align: center;">
+                            <a href="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500" download="carlos_mendoza.jpg" target="_blank" class="btn-download">
+                                📥 Descargar Foto
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="student-num">2</td>
+                        <td style="font-weight: 500;">Ana Delgado Espinoza</td>
+                        <td>Napa / Lira</td>
+                        <td style="text-align: center;">
+                            <a href="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500" download="ana_delgado.jpg" target="_blank" class="btn-download">
+                                📥 Descargar Foto
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="student-num">3</td>
+                        <td style="font-weight: 500;">Luis Fernando Torres</td>
+                        <td>Trompeta</td>
+                        <td style="text-align: center;">
+                            <a href="https://images.unsplash.com/photo-139528741775-53994a69daeb?w=500" download="luis_torres.jpg" target="_blank" class="btn-download">
+                                📥 Descargar Foto
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="actions">
             <a href="#" class="btn-back" onclick="window.close(); return false;">Cerrar Ventana</a>
         </div>
     </div>
 
     <script>
-        // Función para obtener los parámetros que viajan en la URL
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
@@ -151,15 +279,12 @@
             };
         }
 
-        // Al cargar la página, extraemos los datos de la URL y los pintamos
         window.onload = function() {
             const datos = getUrlParams();
-            
             document.getElementById('lblColegio').innerText = decodeURIComponent(datos.colegio);
             document.getElementById('lblDocente').innerText = "Prof. " + decodeURIComponent(datos.docente);
             
-            // Nota: Si en el futuro deseas traer más datos de este colegio (como fotos extras), 
-            // puedes hacer un fetch a tu Google Sheets aquí usando el nombre del colegio.
+            // Opcional: Aquí puedes rellenar dinámicamente la tabla si conectas esta vista a otra hoja de tu Sheets
         };
     </script>
 </body>
