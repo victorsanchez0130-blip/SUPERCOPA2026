@@ -88,15 +88,10 @@
             max-width: 1000px;
             margin: 40px auto;
             padding: 0 20px;
-            /* Negro con 10% de opacidad */
-    background-color: rgba(0, 0, 0, 0.1) !important; 
-    
-    /* Efecto extra opcional: Añade un borde sutil para que el panel no se pierda del todo */
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    
-    /* Efecto extra opcional: Hace un desenfoque elegante al fondo (estilo vidrio esmerilado) */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Esto ayuda a definir los bordes */
+            backdrop-filter: blur(8px); /* Hace un efecto vidrio muy elegante */
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .header-section {
@@ -120,6 +115,10 @@
             display: flex;
             justify-content: center;
             margin-bottom: 25px;
+            background-color: rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Esto ayuda a definir los bordes */
+            backdrop-filter: blur(8px); /* Hace un efecto vidrio muy elegante */
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .tabs {
@@ -127,6 +126,10 @@
             padding: 4px;
             border-radius: 8px;
             display: flex;
+            background-color: rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Esto ayuda a definir los bordes */
+            backdrop-filter: blur(8px); /* Hace un efecto vidrio muy elegante */
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .tab-btn {
@@ -138,6 +141,7 @@
             color: var(--text-muted);
             border-radius: 6px;
             cursor: pointer;
+            
         }
 
         .tab-btn.active {
