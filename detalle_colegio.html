@@ -116,6 +116,8 @@
             transition: all 0.2s;
         }
         .btn-download:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .no-students { text-align: center; padding: 20px; color: var(--text-muted); font-style: italic; }
 
         .actions { text-align: center; }
         .btn-back { display: inline-block; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--card-border); padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: 500; transition: all 0.2s; cursor: pointer; }
@@ -155,28 +157,7 @@
                 </thead>
                 <tbody id="studentsTableBody">
                     <tr>
-                        <td class="student-num">1</td>
-                        <td style="font-weight: 500;">Carlos Mendoza Ruiz</td>
-                        <td>Tarola</td>
-                        <td style="text-align: center;">
-                            <a href="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500" download="carlos_mendoza.jpg" target="_blank" class="btn-download">📥 Descargar Carnet</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="student-num">2</td>
-                        <td style="font-weight: 500;">Ana Delgado Espinoza</td>
-                        <td>Lira</td>
-                        <td style="text-align: center;">
-                            <a href="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500" download="ana_delgado.jpg" target="_blank" class="btn-download">📥 Descargar Carnet</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="student-num">3</td>
-                        <td style="font-weight: 500;">Luis Fernando Torres</td>
-                        <td>Corneta</td>
-                        <td style="text-align: center;">
-                            <a href="https://images.unsplash.com/photo-139528741775-53994a69daeb?w=500" download="luis_torres.jpg" target="_blank" class="btn-download">📥 Descargar Carnet</a>
-                        </td>
+                        <td colspan="4" class="no-students">Cargando integrantes desde Google Sheets...</td>
                     </tr>
                 </tbody>
             </table>
@@ -188,25 +169,92 @@
     </div>
 
     <script>
-        // CORRECCIÓN AQUÍ: Se añadieron 'categoria' y 'puntos' a la captura de parámetros
+        // ⚠️ PEGA AQUÍ TU URL EN FORMATO CSV DE LA PESTAÑA DE ALUMNOS:
+        const URL_SHEETS_ALUMNOS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv";
+
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                colegio: params.get('colegio') || 'Colegio No Identificado',
+                colegio: params.get('colegio') || '',
                 docente: params.get('docente') || 'Docente No Asignado',
                 categoria: params.get('categoria') || 'No Asignada',
                 puntos: params.get('puntos') || '0'
             };
         }
 
+        async function cargarAlumnosDesdeSheets(nombreColegio) {
+            const tbody = document.getElementById('studentsTableBody');
+            
+            if (!URL_SHEETS_ALUMNOS || URL_SHEETS_ALUMNOS.initials === "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv") {
+                tbody.innerHTML = `<tr><td colspan="4" class="no-students">Falta configurar el enlace de Google Sheets de Alumnos.</td></tr>`;
+                return;
+            }
+
+            try {
+                const response = await fetch(URL_SHEETS_ALUMNOS);
+                const dataText = await response.text();
+                const lines = dataText.split(/\r?\n/);
+                
+                let htmlContent = "";
+                let contador = 1;
+
+                // Empezamos en i = 1 para saltarnos la cabecera
+                for (let i = 1; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    
+                    // Separamos por comas las columnas
+                    const cols = lines[i].split(",");
+                    
+                    // Limpiamos las comillas que a veces añade el CSV automáticamente
+                    const sheetColegio = cols[0] ? cols[0].replace(/^"|"$/g, '').trim() : "";
+                    const sheetNombre = cols[2] ? cols[2].replace(/^"|"$/g, '').trim() : "";
+                    const sheetInstrumento = cols[3] ? cols[3].replace(/^"|"$/g, '').trim() : "";
+                    const sheetFoto = cols[4] ? cols[4].replace(/^"|"$/g, '').trim() : "#";
+
+                    // 🎯 FILTRO MÁGICO: Si la fila pertenece al colegio abierto actual, lo agregamos
+                    if (sheetColegio.toLowerCase() === nombreColegio.toLowerCase()) {
+                        htmlContent += `
+                            <tr>
+                                <td class="student-num">${contador}</td>
+                                <td style="font-weight: 500;">${sheetNombre}</td>
+                                <td>${sheetInstrumento}</td>
+                                <td style="text-align: center;">
+                                    <a href="${sheetFoto}" download="${sheetNombre.replace(/\s+/g, '_')}.jpg" target="_blank" class="btn-download">
+                                        📥 Descargar Foto
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                        contador++;
+                    }
+                }
+
+                // Si no se encontró ningún alumno para este colegio
+                if (htmlContent === "") {
+                    tbody.innerHTML = `<tr><td colspan="4" class="no-students">No hay alumnos registrados aún para este colegio.</td></tr>`;
+                } else {
+                    tbody.innerHTML = htmlContent;
+                }
+
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="4" class="no-students" style="color:#ef4444;">Error al conectar con Google Sheets.</td></tr>`;
+            }
+        }
+
         window.onload = function() {
             const datos = getUrlParams();
             
-            // Renderizamos los textos de forma dinámica
-            document.getElementById('lblColegio').innerText = decodeURIComponent(datos.colegio);
+            const txtColegio = decodeURIComponent(datos.colegio);
+            document.getElementById('lblColegio').innerText = txtColegio;
             document.getElementById('lblDocente').innerText = "Prof. " + decodeURIComponent(datos.docente);
             document.getElementById('lblCategoria').innerText = "Categoría " + decodeURIComponent(datos.categoria);
             document.getElementById('lblPuntos').innerText = decodeURIComponent(datos.puntos) + " pts";
+            
+            // Disparar la consulta en vivo de los estudiantes
+            if (txtColegio) {
+                cargarAlumnosDesdeSheets(txtColegio);
+            }
         };
     </script>
 </body>
