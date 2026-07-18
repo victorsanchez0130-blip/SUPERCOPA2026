@@ -3,618 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supercopa - Sistema de Gestión</title>
+    <title>Supercopa Bandas Rítmicas - Santa 2026</title>
+    <!-- Bootstrap 5 para Estructura Responsiva -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome para Iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <style>
         body {
-    /* Buscamos la imagen que acabas de subir a GitHub */
-    background-image: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('fondo.jpg');
-    
-    /* Centra el trofeo perfectamente en la pantalla */
-    background-position: center center;
-    
-    /* Evita que la imagen se repita como mosaico */
-    background-repeat: no-repeat;
-    
-    /* El truco mágico: hace que el fondo se quede fijo mientras el contenido se desliza */
-    background-attachment: fixed;
-    
-    /* Escala la imagen para cubrir toda la pantalla sin perder su proporción original */
-    background-size: cover;
-    
-    /* Color de respaldo por si el internet del usuario está lento y tarda en cargar la imagen */
-    background-color: #0b1329; 
-    
-    color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-        :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
-        * {
-            box-sizing: border-box;
+            /* Imagen de fondo con capa protectora oscura del 75% para legibilidad del texto */
+            background-image: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('fondo.jpg');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-color: #0b1329; 
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            padding-bottom: 60px;
-        }
-
-        /* Navbar */
-        nav {
-            background: var(--card-bg);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .btn-login, .btn-logout {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .btn-login:hover { background: var(--primary-hover); }
-        .btn-logout { background: #ef4444; display: none; }
-
-        /* Container */
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .header-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header-section h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-            color: #0f172a;
-        }
-
-        .header-section p {
-            color: var(--text-muted);
-            font-size: 15px;
-        }
-
-        /* Tabs */
-        .tabs-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
+        /* Paneles principales, tarjetas y tablas con 10% de opacidad y efecto esmerilado */
+        .glass-panel, .card, table, .modal-content {
             background-color: rgba(0, 0, 0, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Esto ayuda a definir los bordes */
-            backdrop-filter: blur(8px); /* Hace un efecto vidrio muy elegante */
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .tabs {
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 8px;
-            display: flex;
-            background-color: rgba(0, 0, 0, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Esto ayuda a definir los bordes */
-            backdrop-filter: blur(8px); /* Hace un efecto vidrio muy elegante */
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
-            padding: 6px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-muted);
-            border-radius: 6px;
-            cursor: pointer;
-            
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: var(--text-main);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        /* Stats Dashboard */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
             border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .stat-icon { font-size: 24px; margin-bottom: 8px; color: var(--primary); }
-        .stat-number { font-size: 28px; font-weight: bold; color: #0f172a; margin-bottom: 4px; }
-        .stat-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
-
-        /* Controls Filters */
-        .search-box {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 15px;
-            margin-bottom: 20px;
-            outline: none;
-        }
-        .search-box:focus { border-color: var(--primary); }
-
-        .filters {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+        .table {
+            color: #ffffff !important;
         }
 
-        .filter-btn {
-            background: white;
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 20px;
+        .table th {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: #ffc107 !important;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            vertical-align: middle;
+        }
+
+        .clickable-row {
             cursor: pointer;
-            font-size: 14px;
-            color: var(--text-muted);
-            transition: all 0.2s;
+            transition: background 0.2s ease;
         }
 
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+        .clickable-row:hover {
+            background-color: rgba(255, 255, 255, 0.15) !important;
         }
 
-        /* Grid de Tarjetas */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        .student-card {
             transition: transform 0.2s;
-            position: relative;
-            background-color: rgba(0, 0, 0, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Esto ayuda a definir los bordes */
-            backdrop-filter: blur(8px); /* Hace un efecto vidrio muy elegante */
-            -webkit-backdrop-filter: blur(8px);
-        }
-        .card:hover { transform: translateY(-3px); }
-
-        .card-img-container {
-            height: 200px;
-            background: #f1f5f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
         }
 
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
-        .card-no-img { font-size: 40px; color: #cbd5e1; }
-        .card-content { padding: 20px; }
-
-        .card-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .card-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; color: #0f172a; }
-        .card-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; }
-
-        .card-metrics {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
-            font-size: 13px;
-        }
-        .metric-box { flex: 1; }
-        .metric-val { font-weight: bold; color: #0f172a; font-size: 15px; }
-
-        .no-data { text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--text-muted); font-size: 16px; }
-
-        /* Ranking Table */
-        .ranking-container {
-            display: none;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 14px 20px; border-bottom: 1px solid var(--border); }
-        th { background: #f8fafc; font-weight: 600; color: var(--text-muted); font-size: 13px; text-transform: uppercase; }
-        tr:last-child td { border-bottom: none; }
-        .rank-number { font-weight: bold; color: var(--primary); }
-
-        /* Modal Login */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-        }
-
-        .modal-header { margin-bottom: 20px; text-align: center; }
-        .modal-header h2 { font-size: 24px; color: #0f172a; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #475569; }
-        .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; outline: none; }
-        .form-control:focus { border-color: var(--primary); }
-        .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; }
-        .btn-close { background: none; border: none; color: var(--text-muted); float: right; cursor: pointer; font-size: 18px; }
-        .admin-banner { display: none; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px; border-radius: 8px; margin-bottom: 25px; font-size: 14px; text-align: center; }
-
-        @media(max-width: 768px) {
-            .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+        .student-card:hover {
+            transform: translateY(-3px);
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">🏆 Supercopa Bandas</div>
-        <button class="btn-login" id="loginBtn" onclick="openModal()">Iniciar Sesión</button>
-        <button class="btn-logout" id="logoutBtn" onclick="logout()">Cerrar Sesión</button>
-    </nav>
+    <!-- CABECERA PRINCIPAL -->
+    <header class="text-center py-4 mb-4" style="background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <h1 class="fw-bold text-warning mb-1">SUPERCOPA 2026</h1>
+        <p class="lead mb-0 text-white-50">Control de Puntajes y Ranking Oficial</p>
+    </header>
 
-    <div class="container">
-        <div class="admin-banner" id="adminBanner">
-            🔒 Modo Administrador Activo. Los cambios deben realizarse directamente en tu Google Sheets vinculado.
-        </div>
-
-        <div class="header-section">
-            <h1>Nuestros Docentes</h1>
-            <p>Conoce a los docentes que lideran nuestras bandas rítmicas escolares</p>
-        </div>
-
-        <div class="tabs-container">
-            <div class="tabs">
-                <button class="tab-btn active" id="tabGrid" onclick="switchTab('grid')">👤 Vista General</button>
-                <button class="tab-btn" id="tabRank" onclick="switchTab('rank')">🏅 Ranking</button>
+    <!-- PANTALLA PRINCIPAL: RANKING Y BUSCADOR -->
+    <main id="contenedor-principal-ranking" class="container">
+        <div class="glass-panel p-4 mb-4">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-secondary text-white-50"><i class="fas fa-search"></i></span>
+                        <input type="text" id="buscador-colegio" class="form-control bg-transparent text-white border-secondary" placeholder="Buscar institución educativa o docente...">
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <span class="badge bg-warning text-dark px-3 py-2 fs-6">Actualizado en Vivo</span>
+                </div>
             </div>
         </div>
 
-        <!-- Dashboard Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-number" id="statDocentes">0</div>
-                <div class="stat-label">Docentes</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">🎷</div>
-                <div class="stat-number" id="statAlumnos">0</div>
-                <div class="stat-label">Alumnos Totales</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
-                <div class="stat-number" id="statPuntos">0</div>
-                <div class="stat-label">Puntos Totales</div>
-            </div>
-        </div>
-
-        <!-- Buscador y Filtros -->
-        <input type="text" class="search-box" id="searchInp" placeholder="Buscar por nombre de colegio o docente..." oninput="filterData()">
-        
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterCategory('TODOS', this)">Todos</button>
-            <button class="filter-btn" onclick="filterCategory('A', this)">Categoría A</button>
-            <button class="filter-btn" onclick="filterCategory('B', this)">Categoría B</button>
-            <button class="filter-btn" onclick="filterCategory('PRIMARIA', this)">Primaria</button>
-        </div>
-
-        <!-- Vista Grid -->
-        <div class="cards-grid" id="cardsGrid">
-            <div class="no-data">Cargando datos desde Google Sheets...</div>
-        </div>
-
-        <!-- Vista Ranking -->
-        <div class="ranking-container" id="rankingView">
-            <table>
+        <!-- TABLA DE COLEGIOS -->
+        <div class="glass-panel p-3 table-responsive">
+            <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <th>Puesto</th>
-                        <th>Colegio</th>
-                        <th>Docente</th>
-                        <th>Categoría</th>
-                        <th>Alumnos</th>
-                        <th>Puntos</th>
+                        <th scope="col" class="text-center">Puesto</th>
+                        <th scope="col">Institución Educativa</th>
+                        <th scope="col">Docente / Director</th>
+                        <th scope="col" class="text-center">Puntaje Total</th>
                     </tr>
                 </thead>
-                <tbody id="rankingTableBody">
-                    <!-- Dinámico -->
+                <tbody id="tabla-cuerpo-ranking">
+                    <!-- Los datos se inyectan automáticamente desde Google Sheets -->
+                    <tr class="clickable-row" onclick="verDetalleColegio('Colegio Emblemático de Santa', 'https://via.placeholder.com/150')">
+                        <td class="text-center fw-bold text-warning">#1</td>
+                        <td class="fw-bold"><i class="fas fa-school text-info me-2"></i> Colegio Emblemático de Santa</td>
+                        <td>Prof. Carlos Mendoza</td>
+                        <td class="text-center fw-bold text-success">350 pts</td>
+                    </tr>
+                    <tr class="clickable-row" onclick="verDetalleColegio('I.E. República de Perú', 'https://via.placeholder.com/150')">
+                        <td class="text-center fw-bold text-white-50">#2</td>
+                        <td class="fw-bold"><i class="fas fa-school text-info me-2"></i> I.E. República de Perú</td>
+                        <td>Dra. María Luján</td>
+                        <td class="text-center fw-bold text-success">320 pts</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-    </div>
+    </main>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <button class="btn-close" onclick="closeModal()">✕</button>
-            <div class="modal-header">
-                <h2>Iniciar Sesión</h2>
-                <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Panel de Administración Supercopa</p>
+    <!-- PANTALLA DE DETALLE DINÁMICA: SE ACTIVA AL HACER CLIC EN UN COLEGIO -->
+    <div id="vista-detalle-colegio" style="display: none;" class="container mb-5">
+        <button class="btn btn-outline-warning mb-4 px-4" onclick="volverAlInicio()">
+            <i class="fas fa-arrow-left me-2"></i> Volver al Ranking
+        </button>
+        
+        <div class="row g-4">
+            <!-- Columna Izquierda: Perfil del Colegio -->
+            <div class="col-lg-4">
+                <div class="glass-panel p-4 text-center">
+                    <img id="detalle-logo-colegio" src="" alt="Logo" class="img-fluid rounded mb-3 shadow" style="max-height: 180px; object-fit: contain;">
+                    <h3 id="detalle-nombre-colegio" class="fw-bold text-warning mb-3"></h3>
+                    <hr class="border-light opacity-25">
+                    
+                    <div class="text-start mt-3">
+                        <p class="mb-2"><strong><i class="fas fa-calendar-alt text-warning me-2"></i> Fundación:</strong> <span id="detalle-fundacion" class="text-white-50"></span></p>
+                        <p class="mb-2"><strong><i class="fas fa-award text-warning me-2"></i> Palmarés Histórico:</strong></p>
+                        <ul id="detalle-premios" class="list-unstyled ps-3 text-white-50">
+                            <!-- Se llena con JS -->
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label>Usuario / Email</label>
-                    <input type="text" id="userInp" class="form-control" required placeholder="admin@supercopa.com">
+            
+            <!-- Columna Derecha: Alumnos actuales -->
+            <div class="col-lg-8">
+                <div class="glass-panel p-4">
+                    <h4 class="fw-bold text-white mb-4 border-bottom pb-2"><i class="fas fa-users text-info me-2"></i> Alumnos Registrados</h4>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="contenedor-alumnos-detalle">
+                        <!-- Las tarjetas de alumnos se crean dinámicamente -->
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <input type="password" id="passInp" class="form-control" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn-submit">Ingresar al Sistema</button>
-            </form>
+            </div>
         </div>
     </div>
 
+    <!-- SCRIPTS LOGICOS -->
     <script>
-        // =========================================================================
-        // 🌟 CONFIGURACIÓN DE TU ENLACE DE GOOGLE SHEETS
-        // =========================================================================
-        // Reemplaza el texto de abajo con el enlace CSV que copiaste de tu Google Sheets
+        // CONFIGURACIÓN: Reemplaza esta URL con el enlace de publicación CSV de tu Google Sheet
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv";
 
-        // Respaldo estático local por contingencia
-        const backupData = [
-            {"colegio": "I.E. NAMORA", "docente": "JHON ALVARADO", "foto": "https://i.postimg.cc/dV48hzwp/JA.jpg", "categoria": "B", "alumnos": 0, "puntos": 35},
-            {"colegio": "I.E. EXPERIMENTAL UNS", "docente": "JOSE GALVEZ", "foto": "https://i.postimg.cc/fT1vC7Yc/JG.jpg", "categoria": "A", "alumnos": 10, "puntos": 20},
-            {"colegio": "I.E. GLORIOSA 329", "docente": "MIGUEL MONDOÑEDO", "foto": "https://i.postimg.cc/3JzZ1j2d/MM.jpg", "categoria": "A", "alumnos": 10, "puntos": 35},
-            {"colegio": "I.E. JOSÉ GALVEZ", "docente": "LUIS MONZON", "foto": "", "categoria": "A", "alumnos": 20, "puntos": 35},
-            {"colegio": "I.E. REPÚBLICA ARGENTINA", "docente": "JUAN PABLO", "foto": "https://i.postimg.cc/m2KSj37C/JP.jpg", "categoria": "A", "alumnos": 20, "puntos": 22},
-            {"colegio": "I.E. PEDRO PABLO ATUSPARIA", "docente": "JUAN PABLO", "foto": "https://i.postimg.cc/m2KSj37C/JP.jpg", "categoria": "A", "alumnos": 20, "puntos": 60},
-            {"colegio": "I.E. REPÚBLICA DE CHILE", "docente": "ERNESTO LOMPARTE", "foto": "https://i.postimg.cc/pX3BCQKm/EL.jpg", "categoria": "A", "alumnos": 10, "puntos": 60},
-            {"colegio": "I.E. SAN JACINTO", "docente": "MIGUEL MONDOÑEDO", "foto": "https://i.postimg.cc/3JzZ1j2d/MM.jpg", "categoria": "A", "alumnos": 10, "puntos": 35},
-            {"colegio": "I.E.P. EL SEÑOR ES MI PASTOR", "docente": "ERICK OBANDO", "foto": "https://i.postimg.cc/65FhcVC7/EO.jpg", "categoria": "A", "alumnos": 10, "puntos": 35},
-            {"colegio": "I.E.P. G.M.L.J. ORBEGOSO", "docente": "ERICK OBANDO", "foto": "https://i.postimg.cc/65FhcVC7/EO.jpg", "categoria": "A", "alumnos": 10, "puntos": 20},
-            {"colegio": "I.E. ABELARDO QUIÑONES", "docente": "ERNESTO LOMPARTE", "foto": "https://i.postimg.cc/pX3BCQKm/EL.jpg", "categoria": "B", "alumnos": 10, "puntos": 28},
-            {"colegio": "I.E. CONSTRUCTORES DEL SABER", "docente": "OSCAR MONCADA", "foto": "https://i.postimg.cc/c4Pch7ff/OM.jpg", "categoria": "B", "alumnos": 10, "puntos": 60},
-            {"colegio": "I.E. LA HUACA", "docente": "OSCAR MONCADA", "foto": "https://i.postimg.cc/c4Pch7ff/OM.jpg", "categoria": "B", "alumnos": 10, "puntos": 60},
-            {"colegio": "I.E. LAS BRISAS", "docente": "JUAN PABLO", "foto": "https://i.postimg.cc/m2KSj37C/JP.jpg", "categoria": "B", "alumnos": 10, "puntos": 22},
-            {"colegio": "I.E. RINCONADA", "docente": "FAVIO MENDEZ", "foto": "https://i.postimg.cc/tC8zkdF7/FM.jpg", "categoria": "B", "alumnos": 10, "puntos": 45},
-            {"colegio": "I.E. YUGOSLAVO", "docente": "ESTEBAN SALAS", "foto": "https://i.postimg.cc/c4Pch7fY/ES.jpg", "categoria": "B", "alumnos": 10, "puntos": 46},
-            {"colegio": "I.E.P. SANTA TERESITA DE JESÚS", "docente": "ERNESTO LOMPARTE", "foto": "https://i.postimg.cc/pX3BCQKm/EL.jpg", "categoria": "B", "alumnos": 10, "puntos": 48},
-            {"colegio": "I.E.P. JEAN PIAGET", "docente": "VICTOR SANCHEZ", "foto": "https://i.postimg.cc/CL947Cbr/VS.jpg", "categoria": "B", "alumnos": 10, "puntos": 50},
-            {"colegio": "I.E.P. SAN FELIPE", "docente": "BORIS MONTERO", "foto": "https://i.postimg.cc/QxFbcYKK/BM.jpg", "categoria": "B", "alumnos": 10, "puntos": 52},
-            {"colegio": "I.E.P. SANTA TERESITA", "docente": "ERICK OBANDO", "foto": "https://i.postimg.cc/65FhcVC7/EO.jpg", "categoria": "B", "alumnos": 10, "puntos": 54},
-            {"colegio": "I.E. ANDRES AVELINO CACERES", "docente": "ESTEBAN SALAS", "foto": "https://i.postimg.cc/c4Pch7fY/ES.jpg", "categoria": "B", "alumnos": 10, "puntos": 55},
-            {"colegio": "I.E.P. SANTA URSULA", "docente": "MIGUEL MONDOÑEDO", "foto": "https://i.postimg.cc/3JzZ1j2d/MM.jpg", "categoria": "B", "alumnos": 10, "puntos": 57},
-            {"colegio": "I.E. EX 314", "docente": "ERICK OBANDO", "foto": "https://i.postimg.cc/65FhcVC7/EO.jpg", "categoria": "PRIMARIA", "alumnos": 10, "puntos": 59}
-        ];
-
-        let currentData = [];
-        let filterText = "";
-        let filterCat = "TODOS";
-
-        // Función encargada de descargar y convertir el CSV remoto a objetos de JavaScript
-        async function loadData() {
-            if (GOOGLE_SHEET_CSV_URL && GOOGLE_SHEET_CSV_URL !== "AQUÍ_TU_LINK_DE_GOOGLE_SHEETS") {
-                try {
-                    const response = await fetch(GOOGLE_SHEET_CSV_URL);
-                    const dataText = await response.text();
-                    
-                    const lines = dataText.split(/\r?\n/);
-                    const parsedData = [];
-                    
-                    // Empezamos en la línea 1 para evitar los encabezados (Colegio, Docente, etc.)
-                    for(let i = 1; i < lines.length; i++) {
-                        if (!lines[i].trim()) continue;
-                        
-                        const cols = lines[i].split(",");
-                        if(cols.length >= 2) {
-                            parsedData.push({
-                                colegio: cols[0] ? cols[0].replace(/^"|"$/g, '').trim() : "",
-                                docente: cols[1] ? cols[1].replace(/^"|"$/g, '').trim() : "",
-                                foto: cols[2] ? cols[2].replace(/^"|"$/g, '').trim() : "",
-                                categoria: cols[3] ? cols[3].replace(/^"|"$/g, '').trim().toUpperCase() : "TODOS",
-                                alumnos: cols[4] ? parseInt(cols[4].replace(/^"|"$/g, '').trim()) || 0 : 0,
-                                puntos: cols[5] ? parseInt(cols[5].replace(/^"|"$/g, '').trim()) || 0 : 0
-                            });
-                        }
-                    }
-                    
-                    currentData = parsedData.length > 0 ? parsedData : [...backupData];
-                } catch(e) {
-                    console.error("Error conectando a Google Sheets, usando copia de seguridad local.", e);
-                    currentData = [...backupData];
-                }
-            } else {
-                currentData = [...backupData];
+        // BASE DE DATOS EXTENDIDA (Aquí añades la historia, premios y alumnos de cada colegio)
+        const datosExtraColegios = {
+            "Colegio Emblemático de Santa": {
+                fundacion: "14 de Abril de 1965",
+                premios: ["🏆 1er Puesto Nacional de Bandas 2024", "🥇 Campeón Regional Ancash 2025"],
+                alumnos: [
+                    { nombre: "Juan Pérez", puesto: "Tambor Mayor", foto: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150" },
+                    { nombre: "Sofía Martínez", puesto: "Lira Principal", foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" },
+                    { nombre: "Luis Flores", puesto: "Trompeta", foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" }
+                ]
+            },
+            "I.E. República de Perú": {
+                fundacion: "28 de Julio de 1981",
+                premios: ["🏆 Gran Copa Santa Rítmica 2023"],
+                alumnos: [
+                    { nombre: "Carlos Benites", puesto: "Percusión", foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" },
+                    { nombre: "Ana Alva", puesto: "Flauta Traversa", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" }
+                ]
             }
-            render();
-        }
+        };
 
-        function calculateStats(data) {
-            document.getElementById('statDocentes').innerText = data.length;
-            let totalAlumnos = data.reduce((sum, item) => sum + parseInt(item.alumnos || 0), 0);
-            let totalPuntos = data.reduce((sum, item) => sum + parseInt(item.puntos || 0), 0);
-            document.getElementById('statAlumnos').innerText = totalAlumnos;
-            document.getElementById('statPuntos').innerText = totalPuntos;
-        }
-
-        function render() {
-            let filtered = currentData.filter(item => {
-                const matchesSearch = item.colegio.toLowerCase().includes(filterText) || item.docente.toLowerCase().includes(filterText);
-                const matchesCat = filterCat === "TODOS" || item.categoria === filterCat;
-                return matchesSearch && matchesCat;
-            });
-
-            calculateStats(filtered);
-
-            // Renderizar la grilla de Tarjetas
-            const grid = document.getElementById('cardsGrid');
-            grid.innerHTML = "";
+        // FUNCIÓN PARA VER LA VISTA ADICIONAL DEL COLEGIO
+        function verDetalleColegio(nombreColegio, urlLogo) {
+            // Ocultar ranking principal
+            document.getElementById('contenedor-principal-ranking').style.display = 'none';
             
-            if(filtered.length === 0) {
-                grid.innerHTML = `<div class="no-data">No se encontraron docentes o colegios con los filtros seleccionados.</div>`;
+            // Mostrar panel de detalles
+            const panelDetalle = document.getElementById('vista-detalle-colegio');
+            panelDetalle.style.display = 'block';
+
+            // Inyectar Nombre y Logo básico
+            document.getElementById('detalle-nombre-colegio').innerText = nombreColegio;
+            document.getElementById('detalle-logo-colegio').src = urlLogo || 'fondo.jpg';
+
+            // Obtener información adicional mapeada
+            const datosInfo = datosExtraColegios[nombreColegio] || {
+                fundacion: "No especificada en el sistema",
+                premios: ["Participante Oficial de la Supercopa 2026"],
+                alumnos: []
+            };
+
+            // Inyectar Fundación y Premios
+            document.getElementById('detalle-fundacion').innerText = datosInfo.fundacion;
+            const contenedorPremios = document.getElementById('detalle-premios');
+            contenedorPremios.innerHTML = datosInfo.premios.map(p => `<li><i class="fas fa-medal text-warning me-2"></i>${p}</li>`).join('');
+
+            // Inyectar bloque de alumnos con opción a descargar foto
+            const contenedorAlumnos = document.getElementById('contenedor-alumnos-detalle');
+            contenedorAlumnos.innerHTML = ''; // Limpiar previo
+
+            if(datosInfo.alumnos.length === 0) {
+                contenedorAlumnos.innerHTML = `<div class="col-12 text-white-50 text-center py-3">No hay alumnos registrados aún para esta delegación.</div>`;
             } else {
-                filtered.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = "card";
-                    let imageHTML = item.foto ? `<img src="${item.foto}" class="card-img" alt="${item.docente}">` : `<div class="card-no-img">👤</div>`;
-                    card.innerHTML = `
-                        <div class="card-badge">${item.categoria}</div>
-                        <div class="card-img-container">${imageHTML}</div>
-                        <div class="card-content">
-                            <div class="card-title">${item.colegio}</div>
-                            <div class="card-sub">Prof. ${item.docente}</div>
-                            <div class="card-metrics">
-                                <div class="metric-box">
-                                    <div class="metric-val">${item.alumnos}</div>
-                                    <div style="color:var(--text-muted); font-size:11px;">Alumnos</div>
-                                </div>
-                                <div class="metric-box" style="text-align:right;">
-                                    <div class="metric-val" style="color:var(--primary);">${item.puntos} pts</div>
-                                    <div style="color:var(--text-muted); font-size:11px;">Puntaje</div>
-                                </div>
+                datosInfo.alumnos.forEach(alumno => {
+                    contenedorAlumnos.innerHTML += `
+                        <div class="col">
+                            <div class="card p-3 text-center student-card h-100" style="background-color: rgba(255,255,255,0.05) !important;">
+                                <img src="${alumno.foto}" alt="${alumno.nombre}" class="rounded-circle mx-auto mb-2 shadow-sm" style="width: 75px; height: 75px; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);">
+                                <h6 class="mb-1 text-white fw-bold">${alumno.nombre}</h6>
+                                <p class="small text-warning mb-3">${alumno.puesto}</p>
+                                <a href="${alumno.foto}" download="${alumno.nombre}.jpg" target="_blank" class="btn btn-sm btn-dark w-100 border-secondary">
+                                    <i class="fas fa-download me-1"></i> Foto
+                                </a>
                             </div>
                         </div>
                     `;
-                    grid.appendChild(card);
                 });
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-            // Renderizar la tabla de Ranking (De Mayor a Menor Puntaje)
-            const rankBody = document.getElementById('rankingTableBody');
-            rankBody.innerHTML = "";
-            let sortedRank = [...filtered].sort((a,b) => b.puntos - a.puntos);
-            sortedRank.forEach((item, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="rank-number">#${index + 1}</td>
-                    <td style="font-weight:600;">${item.colegio}</td>
-                    <td>${item.docente}</td>
-                    <td><span style="background:#f1f5f9; padding:2px 8px; border-radius:8px; font-size:12px;">${item.categoria}</span></td>
-                    <td>${item.alumnos}</td>
-                    <td style="font-weight:bold; color:var(--primary);">${item.puntos} pts</td>
-                `;
-                rankBody.appendChild(row);
+        // FUNCIÓN REGRESAR AL LISTADO PRINCIPAL
+        function volverAlInicio() {
+            document.getElementById('vista-detalle-colegio').style.display = 'none';
+            document.getElementById('contenedor-principal-ranking').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // LÓGICA DE BÚSQUEDA FLUIDA
+        document.getElementById('buscador-colegio').addEventListener('input', function(e){
+            const busqueda = e.target.value.toLowerCase();
+            const filas = document.querySelectorAll('#tabla-cuerpo-ranking tr');
+            filas.forEach(fila => {
+                const textoFila = fila.innerText.toLowerCase();
+                fila.style.display = textoFila.includes(busqueda) ? '' : 'none';
             });
-        }
-
-        function filterData() {
-            filterText = document.getElementById('searchInp').value.toLowerCase();
-            render();
-        }
-
-        function filterCategory(cat, btn) {
-            filterCat = cat;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            render();
-        }
-
-        function switchTab(tab) {
-            document.getElementById('tabGrid').classList.toggle('active', tab === 'grid');
-            document.getElementById('tabRank').classList.toggle('active', tab === 'rank');
-            document.getElementById('cardsGrid').style.display = tab === 'grid' ? 'grid' : 'none';
-            document.getElementById('rankingView').style.display = tab === 'rank' ? 'block' : 'none';
-        }
-
-        function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const user = document.getElementById('userInp').value;
-            const pass = document.getElementById('passInp').value;
-
-            if(user === "admin@supercopa.com" && pass === "123456") {
-                localStorage.setItem('admin_session', 'true');
-                checkSession();
-                closeModal();
-            } else {
-                alert("Credenciales inválidas.");
-            }
-        }
-
-        function checkSession() {
-            const isLogged = localStorage.getItem('admin_session') === 'true';
-            document.getElementById('loginBtn').style.display = isLogged ? 'none' : 'block';
-            document.getElementById('logoutBtn').style.display = isLogged ? 'block' : 'none';
-            document.getElementById('adminBanner').style.display = isLogged ? 'block' : 'none';
-        }
-
-        function logout() {
-            localStorage.removeItem('admin_session');
-            checkSession();
-        }
-
-        window.onload = () => {
-            loadData();
-            checkSession();
-        };
+        });
     </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
