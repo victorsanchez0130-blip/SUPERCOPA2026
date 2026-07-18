@@ -9,11 +9,11 @@
             --primary: #6366f1;
             --primary-hover: #4f46e5;
             --bg: #0b1329; 
-            /* Modificados a transparentes (Glassmorphism) */
+            /* Estilos de transparencia (Glassmorphism) */
             --card-bg: rgba(255, 255, 255, 0.08); 
             --card-border: rgba(255, 255, 255, 0.15);
             --glass-blur: blur(10px);
-            /* Textos claros para el fondo oscuro */
+            /* Colores de texto optimizados para fondo oscuro */
             --text-main: #f8fafc;
             --text-muted: #cbd5e1;
             --border: rgba(255, 255, 255, 0.1);
@@ -213,6 +213,7 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s, border-color 0.2s;
             position: relative;
+            cursor: pointer; /* Cambia el cursor a una mano */
         }
         .card:hover { 
             transform: translateY(-3px); 
@@ -504,6 +505,13 @@
                 filtered.forEach(item => {
                     const card = document.createElement('div');
                     card.className = "card";
+                    
+                    // Acción al hacer click en la tarjeta: Redirige de forma interactiva
+                    card.onclick = function() {
+                        const urlDetalle = `detalle_colegio.html?colegio=${encodeURIComponent(item.colegio)}&docente=${encodeURIComponent(item.docente)}`;
+                        window.open(urlDetalle, '_blank'); 
+                    };
+
                     let imageHTML = item.foto ? `<img src="${item.foto}" class="card-img" alt="${item.docente}">` : `<div class="card-no-img">👤</div>`;
                     card.innerHTML = `
                         <div class="card-badge">${item.categoria}</div>
@@ -528,20 +536,22 @@
             }
 
             const rankBody = document.getElementById('rankingTableBody');
-            rankBody.innerHTML = "";
-            let sortedRank = [...filtered].sort((a,b) => b.puntos - a.puntos);
-            sortedRank.forEach((item, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="rank-number">#${index + 1}</td>
-                    <td style="font-weight:600;">${item.colegio}</td>
-                    <td>${item.docente}</td>
-                    <td><span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:8px; font-size:12px;">${item.categoria}</span></td>
-                    <td>${item.alumnos}</td>
-                    <td style="font-weight:bold; color:var(--primary);">${item.puntos} pts</td>
-                `;
-                rankBody.appendChild(row);
-            });
+            if (rankBody) {
+                rankBody.innerHTML = "";
+                let sortedRank = [...filtered].sort((a,b) => b.puntos - a.puntos);
+                sortedRank.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="rank-number">#${index + 1}</td>
+                        <td style="font-weight:600;">${item.colegio}</td>
+                        <td>${item.docente}</td>
+                        <td><span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:8px; font-size:12px;">${item.categoria}</span></td>
+                        <td>${item.alumnos}</td>
+                        <td style="font-weight:bold; color:var(--primary);">${item.puntos} pts</td>
+                    `;
+                    rankBody.appendChild(row);
+                });
+            }
         }
 
         function filterData() {
