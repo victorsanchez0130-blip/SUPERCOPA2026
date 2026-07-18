@@ -219,6 +219,10 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
             transition: transform 0.2s;
             position: relative;
+            background-color: rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Esto ayuda a definir los bordes */
+            backdrop-filter: blur(8px); /* Hace un efecto vidrio muy elegante */
+            -webkit-backdrop-filter: blur(8px);
         }
         .card:hover { transform: translateY(-3px); }
 
