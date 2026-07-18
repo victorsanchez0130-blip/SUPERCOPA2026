@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Colegio - Supercopa</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #0b1329; 
+            --card-bg: rgba(255, 255, 255, 0.08); 
+            --card-border: rgba(255, 255, 255, 0.15);
+            --glass-blur: blur(10px);
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg); 
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Tarjeta de Información */
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon-shield {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .docente-name {
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .detail-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--card-border);
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="info-card">
+            <div class="icon-shield">🏫</div>
+            <h1 id="lblColegio">Cargando Colegio...</h1>
+            <div class="docente-name" id="lblDocente">Prof. Cargando...</div>
+
+            <div class="details-grid">
+                <div class="detail-box">
+                    <div class="detail-label">Categoría asignada</div>
+                    <div class="detail-value" id="lblCategoria">-</div>
+                </div>
+                <div class="detail-box">
+                    <div class="detail-label">Puntaje Actual</div>
+                    <div class="detail-value" id="lblPuntos" style="color: #4ade80;">0 pts</div>
+                </div>
+            </div>
+
+            <a href="#" class="btn-back" onclick="window.close(); return false;">Cerrar Ventana</a>
+        </div>
+    </div>
+
+    <script>
+        // Función para obtener los parámetros que viajan en la URL
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                colegio: params.get('colegio') || 'Colegio No Identificado',
+                docente: params.get('docente') || 'Docente No Asignado'
+            };
+        }
+
+        // Al cargar la página, extraemos los datos de la URL y los pintamos
+        window.onload = function() {
+            const datos = getUrlParams();
+            
+            document.getElementById('lblColegio').innerText = decodeURIComponent(datos.colegio);
+            document.getElementById('lblDocente').innerText = "Prof. " + decodeURIComponent(datos.docente);
+            
+            // Nota: Si en el futuro deseas traer más datos de este colegio (como fotos extras), 
+            // puedes hacer un fetch a tu Google Sheets aquí usando el nombre del colegio.
+        };
+    </script>
+</body>
+</html>
