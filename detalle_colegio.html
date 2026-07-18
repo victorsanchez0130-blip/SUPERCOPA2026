@@ -169,7 +169,7 @@
     </div>
 
     <script>
-        // ⚠️ PEGA AQUÍ TU URL EN FORMATO CSV DE LA PESTAÑA DE ALUMNOS:
+        // Enlace CSV de la pestaña de Alumnos integrado correctamente
         const URL_SHEETS_ALUMNOS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv";
 
         function getUrlParams() {
@@ -182,14 +182,28 @@
             };
         }
 
+        // Función auxiliar para procesar correctamente líneas CSV complejas (con comillas o comas internas)
+        function parseCSVLine(text) {
+            let p = '', r = [];
+            let q = false;
+            for (let i = 0; i < text.length; i++) {
+                let c = text[i];
+                if (c === '"') {
+                    q = !q;
+                } else if (c === ',' && !q) {
+                    r.push(p.trim());
+                    p = '';
+                } else {
+                    p += c;
+                }
+            }
+            r.push(p.trim());
+            return r;
+        }
+
         async function cargarAlumnosDesdeSheets(nombreColegio) {
             const tbody = document.getElementById('studentsTableBody');
             
-            if (!URL_SHEETS_ALUMNOS || URL_SHEETS_ALUMNOS.initials === "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv") {
-                tbody.innerHTML = `<tr><td colspan="4" class="no-students">Falta configurar el enlace de Google Sheets de Alumnos.</td></tr>`;
-                return;
-            }
-
             try {
                 const response = await fetch(URL_SHEETS_ALUMNOS);
                 const dataText = await response.text();
@@ -198,20 +212,21 @@
                 let htmlContent = "";
                 let contador = 1;
 
-                // Empezamos en i = 1 para saltarnos la cabecera
+                // Empezamos en i = 1 para omitir la fila de encabezados
                 for (let i = 1; i < lines.length; i++) {
                     if (!lines[i].trim()) continue;
                     
-                    // Separamos por comas las columnas
-                    const cols = lines[i].split(",");
+                    // Procesamos la línea respetando las reglas CSV
+                    const cols = parseCSVLine(lines[i]);
                     
-                    // Limpiamos las comillas que a veces añade el CSV automáticamente
-                    const sheetColegio = cols[0] ? cols[0].replace(/^"|"$/g, '').trim() : "";
-                    const sheetNombre = cols[2] ? cols[2].replace(/^"|"$/g, '').trim() : "";
-                    const sheetInstrumento = cols[3] ? cols[3].replace(/^"|"$/g, '').trim() : "";
-                    const sheetFoto = cols[4] ? cols[4].replace(/^"|"$/g, '').trim() : "#";
+                    // Mapeo esperado de columnas según tu estructura:
+                    // Columna 0: Colegio, Columna 1: N°, Columna 2: Nombre, Columna 3: Instrumento, Columna 4: Foto
+                    const sheetColegio = cols[0] || "";
+                    const sheetNombre = cols[2] || "";
+                    const sheetInstrumento = cols[3] || "";
+                    const sheetFoto = cols[4] || "#";
 
-                    // 🎯 FILTRO MÁGICO: Si la fila pertenece al colegio abierto actual, lo agregamos
+                    // Filtrado automático comparando con el colegio actual
                     if (sheetColegio.toLowerCase() === nombreColegio.toLowerCase()) {
                         htmlContent += `
                             <tr>
@@ -229,16 +244,15 @@
                     }
                 }
 
-                // Si no se encontró ningún alumno para este colegio
                 if (htmlContent === "") {
-                    tbody.innerHTML = `<tr><td colspan="4" class="no-students">No hay alumnos registrados aún para este colegio.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="no-students">No hay alumnos registrados aún para este colegio en la pestaña seleccionada.</td></tr>`;
                 } else {
                     tbody.innerHTML = htmlContent;
                 }
 
             } catch (error) {
                 console.error(error);
-                tbody.innerHTML = `<tr><td colspan="4" class="no-students" style="color:#ef4444;">Error al conectar con Google Sheets.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="no-students" style="color:#ef4444;">Error al conectar con Google Sheets. Asegúrate de haber publicado la pestaña correcta de Alumnos.</td></tr>`;
             }
         }
 
@@ -251,7 +265,6 @@
             document.getElementById('lblCategoria').innerText = "Categoría " + decodeURIComponent(datos.categoria);
             document.getElementById('lblPuntos').innerText = decodeURIComponent(datos.puntos) + " pts";
             
-            // Disparar la consulta en vivo de los estudiantes
             if (txtColegio) {
                 cargarAlumnosDesdeSheets(txtColegio);
             }
