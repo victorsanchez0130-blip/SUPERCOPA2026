@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supercopa Bandas Rítmicas - Santa 2026</title>
-    <!-- Bootstrap 5 para Estructura Responsiva -->
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome para Iconos -->
+    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Librería XLSX para leer todas las pestañas de Google Sheets en vivo -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
     <style>
         body {
-            /* Imagen de fondo con capa protectora oscura del 75% para legibilidad del texto */
             background-image: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('fondo.jpg');
             background-position: center center;
             background-repeat: no-repeat;
@@ -20,237 +21,204 @@
             background-color: #0b1329; 
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
         }
-
-        /* Paneles principales, tarjetas y tablas con 10% de opacidad y efecto esmerilado */
-        .glass-panel, .card, table, .modal-content {
+        /* Paneles con 10% de opacidad y efecto blur estilo cristal */
+        .glass-panel, .card, table {
             background-color: rgba(0, 0, 0, 0.1) !important;
             backdrop-filter: blur(10px) !important;
             -webkit-backdrop-filter: blur(10px) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             border-radius: 12px;
         }
-
-        .table {
-            color: #ffffff !important;
-        }
-
+        .table { color: #ffffff !important; }
         .table th {
             background-color: rgba(255, 255, 255, 0.05) !important;
             color: #ffc107 !important;
             border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
         }
-
-        .table td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-            vertical-align: middle;
-        }
-
-        .clickable-row {
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .clickable-row:hover {
-            background-color: rgba(255, 255, 255, 0.15) !important;
-        }
-
-        .student-card {
-            transition: transform 0.2s;
-        }
-
-        .student-card:hover {
-            transform: translateY(-3px);
-        }
+        .table td { border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important; vertical-align: middle; }
+        .clickable-row { cursor: pointer; transition: background 0.2s; }
+        .clickable-row:hover { background-color: rgba(255, 255, 255, 0.15) !important; }
+        .student-card { transition: transform 0.2s; }
+        .student-card:hover { transform: translateY(-3px); }
     </style>
 </head>
 <body>
 
-    <!-- CABECERA PRINCIPAL -->
     <header class="text-center py-4 mb-4" style="background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.1);">
         <h1 class="fw-bold text-warning mb-1">SUPERCOPA 2026</h1>
-        <p class="lead mb-0 text-white-50">Control de Puntajes y Ranking Oficial</p>
+        <p class="lead mb-0 text-white-50">Panel Automático multihojas (23 Colegios)</p>
     </header>
 
-    <!-- PANTALLA PRINCIPAL: RANKING Y BUSCADOR -->
+    <!-- PANTALLA PRINCIPAL: RANKING -->
     <main id="contenedor-principal-ranking" class="container">
         <div class="glass-panel p-4 mb-4">
-            <div class="row g-3 align-items-center">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <span class="input-group-text bg-transparent border-secondary text-white-50"><i class="fas fa-search"></i></span>
-                        <input type="text" id="buscador-colegio" class="form-control bg-transparent text-white border-secondary" placeholder="Buscar institución educativa o docente...">
-                    </div>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <span class="badge bg-warning text-dark px-3 py-2 fs-6">Actualizado en Vivo</span>
-                </div>
-            </div>
+            <input type="text" id="buscador-colegio" class="form-control bg-transparent text-white border-secondary" placeholder="Buscar colegio participante...">
         </div>
 
-        <!-- TABLA DE COLEGIOS -->
         <div class="glass-panel p-3 table-responsive">
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <th scope="col" class="text-center">Puesto</th>
-                        <th scope="col">Institución Educativa</th>
-                        <th scope="col">Docente / Director</th>
-                        <th scope="col" class="text-center">Puntaje Total</th>
+                        <th class="text-center" style="width: 100px;">Puesto</th>
+                        <th>Institución Educativa (Haga clic para ver detalles)</th>
                     </tr>
                 </thead>
                 <tbody id="tabla-cuerpo-ranking">
-                    <!-- Los datos se inyectan automáticamente desde Google Sheets -->
-                    <tr class="clickable-row" onclick="verDetalleColegio('Colegio Emblemático de Santa', 'https://via.placeholder.com/150')">
-                        <td class="text-center fw-bold text-warning">#1</td>
-                        <td class="fw-bold"><i class="fas fa-school text-info me-2"></i> Colegio Emblemático de Santa</td>
-                        <td>Prof. Carlos Mendoza</td>
-                        <td class="text-center fw-bold text-success">350 pts</td>
-                    </tr>
-                    <tr class="clickable-row" onclick="verDetalleColegio('I.E. República de Perú', 'https://via.placeholder.com/150')">
-                        <td class="text-center fw-bold text-white-50">#2</td>
-                        <td class="fw-bold"><i class="fas fa-school text-info me-2"></i> I.E. República de Perú</td>
-                        <td>Dra. María Luján</td>
-                        <td class="text-center fw-bold text-success">320 pts</td>
-                    </tr>
+                    <tr><td colspan="2" class="text-center text-white-50">Cargando las 23 delegaciones desde Google Sheets...</td></tr>
                 </tbody>
             </table>
         </div>
     </main>
 
-    <!-- PANTALLA DE DETALLE DINÁMICA: SE ACTIVA AL HACER CLIC EN UN COLEGIO -->
+    <!-- PANTALLA DE DETALLE (SE ACTIVA AL CLICKEAR) -->
     <div id="vista-detalle-colegio" style="display: none;" class="container mb-5">
-        <button class="btn btn-outline-warning mb-4 px-4" onclick="volverAlInicio()">
+        <button class="btn btn-outline-warning mb-4" onclick="volverAlInicio()">
             <i class="fas fa-arrow-left me-2"></i> Volver al Ranking
         </button>
         
         <div class="row g-4">
-            <!-- Columna Izquierda: Perfil del Colegio -->
+            <!-- Izquierda: Datos del Colegio -->
             <div class="col-lg-4">
                 <div class="glass-panel p-4 text-center">
-                    <img id="detalle-logo-colegio" src="" alt="Logo" class="img-fluid rounded mb-3 shadow" style="max-height: 180px; object-fit: contain;">
                     <h3 id="detalle-nombre-colegio" class="fw-bold text-warning mb-3"></h3>
                     <hr class="border-light opacity-25">
-                    
                     <div class="text-start mt-3">
-                        <p class="mb-2"><strong><i class="fas fa-calendar-alt text-warning me-2"></i> Fundación:</strong> <span id="detalle-fundacion" class="text-white-50"></span></p>
-                        <p class="mb-2"><strong><i class="fas fa-award text-warning me-2"></i> Palmarés Histórico:</strong></p>
-                        <ul id="detalle-premios" class="list-unstyled ps-3 text-white-50">
-                            <!-- Se llena con JS -->
-                        </ul>
+                        <p><strong><i class="fas fa-calendar-alt text-warning me-2"></i> Fundación:</strong> <span id="detalle-fundacion" class="text-white-50"></span></p>
+                        <p><strong><i class="fas fa-award text-warning me-2"></i> Premios y Logros:</strong></p>
+                        <ul id="detalle-premios" class="list-unstyled ps-3 text-white-50"></ul>
                     </div>
                 </div>
             </div>
-            
-            <!-- Columna Derecha: Alumnos actuales -->
+            <!-- Derecha: Alumnos e Instrumentos -->
             <div class="col-lg-8">
                 <div class="glass-panel p-4">
-                    <h4 class="fw-bold text-white mb-4 border-bottom pb-2"><i class="fas fa-users text-info me-2"></i> Alumnos Registrados</h4>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="contenedor-alumnos-detalle">
-                        <!-- Las tarjetas de alumnos se crean dinámicamente -->
-                    </div>
+                    <h4 class="fw-bold text-white mb-4 border-bottom pb-2"><i class="fas fa-users text-info me-2"></i> Alumnos e Instrumentos</h4>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="contenedor-alumnos-detalle"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPTS LOGICOS -->
     <script>
-        // CONFIGURACIÓN: Reemplaza esta URL con el enlace de publicación CSV de tu Google Sheet
-        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv";
+        // CONFIGURACIÓN: Reemplaza las XXXX con el ID real de tu Google Sheet
+        const GOOGLE_SHEET_ID = "1km_ofrlzgebrtpcqdjjy36gyrgxmf2sbtkyg1dgd2ue"; 
+        const URL_EXCEL = `https://docs.google.com/spreadsheets/d/${1km_ofrlzgebrtpcqdjjy36gyrgxmf2sbtkyg1dgd2ue}/export?format=xlsx`;
 
-        // BASE DE DATOS EXTENDIDA (Aquí añades la historia, premios y alumnos de cada colegio)
-        const datosExtraColegios = {
-            "Colegio Emblemático de Santa": {
-                fundacion: "14 de Abril de 1965",
-                premios: ["🏆 1er Puesto Nacional de Bandas 2024", "🥇 Campeón Regional Ancash 2025"],
-                alumnos: [
-                    { nombre: "Juan Pérez", puesto: "Tambor Mayor", foto: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150" },
-                    { nombre: "Sofía Martínez", puesto: "Lira Principal", foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" },
-                    { nombre: "Luis Flores", puesto: "Trompeta", foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" }
-                ]
-            },
-            "I.E. República de Perú": {
-                fundacion: "28 de Julio de 1981",
-                premios: ["🏆 Gran Copa Santa Rítmica 2023"],
-                alumnos: [
-                    { nombre: "Carlos Benites", puesto: "Percusión", foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" },
-                    { nombre: "Ana Alva", puesto: "Flauta Traversa", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" }
-                ]
+        // Aquí guardaremos la información de todas las hojas procesadas
+        let libroCompletoSheets = null;
+
+        // 1. CARGAR TODO EL LIBRO (LAS 23 PESTAÑAS) AL INICIAR
+        async function cargarLibroDesdeSheets() {
+            try {
+                const respuesta = await fetch(URL_EXCEL);
+                const arrayBuffer = await respuesta.arrayBuffer();
+                
+                // XLSX lee todo el archivo binario con sus múltiples pestañas
+                libroCompletoSheets = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
+                
+                // Generar el ranking inicial usando los nombres de las pestañas existentes (los 23 colegios)
+                const listadoColegios = libroCompletoSheets.SheetNames;
+                renderizarTablaInicio(listadoColegios);
+
+            } catch (error) {
+                console.error("Error crítico leyendo las pestañas de Google Sheets:", error);
+                document.getElementById('tabla-cuerpo-ranking').innerHTML = `<tr><td colspan="2" class="text-center text-danger">Error de conexión. Asegúrate de que el documento sea público.</td></tr>`;
             }
-        };
+        }
 
-        // FUNCIÓN PARA VER LA VISTA ADICIONAL DEL COLEGIO
-        function verDetalleColegio(nombreColegio, urlLogo) {
-            // Ocultar ranking principal
+        // 2. MOSTRAR LOS COLEGIOS EN LA TABLA PRINCIPAL
+        function renderizarTablaInicio(listaColegios) {
+            const tbody = document.getElementById('tabla-cuerpo-ranking');
+            tbody.innerHTML = '';
+
+            listaColegios.forEach((nombreColegio, index) => {
+                tbody.innerHTML += `
+                    <tr class="clickable-row" onclick="verDetalleDePestaña('${nombreColegio}')">
+                        <td class="text-center fw-bold text-warning">#${index + 1}</td>
+                        <td class="fw-bold"><i class="fas fa-school text-info me-2"></i> ${nombreColegio}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 3. PROCESAR LA PESTAÑA DEL COLEGIO SELECCIONADO EN TIEMPO REAL
+        function verDetalleDePestaña(nombrePestañaColegio) {
+            // Ocultar e intercambiar vistas
             document.getElementById('contenedor-principal-ranking').style.display = 'none';
+            document.getElementById('vista-detalle-colegio').style.display = 'block';
+            document.getElementById('detalle-nombre-colegio').innerText = nombrePestañaColegio;
+
+            // Extraer la hoja específica del libro de trabajo
+            const hojaColegio = libroCompletoSheets.Sheets[nombrePestañaColegio];
             
-            // Mostrar panel de detalles
-            const panelDetalle = document.getElementById('vista-detalle-colegio');
-            panelDetalle.style.display = 'block';
+            // Convertir las filas de esa pestaña a un objeto JSON estructurado
+            const filas = XLSX.utils.sheet_to_json(hojaColegio);
 
-            // Inyectar Nombre y Logo básico
-            document.getElementById('detalle-nombre-colegio').innerText = nombreColegio;
-            document.getElementById('detalle-logo-colegio').src = urlLogo || 'fondo.jpg';
-
-            // Obtener información adicional mapeada
-            const datosInfo = datosExtraColegios[nombreColegio] || {
-                fundacion: "No especificada en el sistema",
-                premios: ["Participante Oficial de la Supercopa 2026"],
-                alumnos: []
-            };
-
-            // Inyectar Fundación y Premios
-            document.getElementById('detalle-fundacion').innerText = datosInfo.fundacion;
+            const txtFundacion = document.getElementById('detalle-fundacion');
             const contenedorPremios = document.getElementById('detalle-premios');
-            contenedorPremios.innerHTML = datosInfo.premios.map(p => `<li><i class="fas fa-medal text-warning me-2"></i>${p}</li>`).join('');
-
-            // Inyectar bloque de alumnos con opción a descargar foto
             const contenedorAlumnos = document.getElementById('contenedor-alumnos-detalle');
-            contenedorAlumnos.innerHTML = ''; // Limpiar previo
 
-            if(datosInfo.alumnos.length === 0) {
-                contenedorAlumnos.innerHTML = `<div class="col-12 text-white-50 text-center py-3">No hay alumnos registrados aún para esta delegación.</div>`;
+            // Limpieza inicial
+            contenedorPremios.innerHTML = "";
+            contenedorAlumnos.innerHTML = "";
+
+            if (!filas || filas.length === 0) {
+                txtFundacion.innerText = "Sin especificar";
+                contenedorAlumnos.innerHTML = `<div class="col-12 text-white-50 text-center py-3">La pestaña de este colegio está vacía.</div>`;
+                return;
+            }
+
+            // 1. Tomar datos generales (Se asume que vienen definidos en la primera fila de datos)
+            txtFundacion.innerText = filas[0].Fundacion || "No registrada";
+            
+            if (filas[0].Premios) {
+                const arrayPremios = filas[0].Premios.split(",");
+                contenedorPremios.innerHTML = arrayPremios.map(p => `<li><i class="fas fa-medal text-warning me-2"></i>${p.trim()}</li>`).join('');
             } else {
-                datosInfo.alumnos.forEach(alumno => {
+                contenedorPremios.innerHTML = "<li><i class="fas fa-info-circle text-white-50 me-2"></i>Ninguno registrado</li>";
+            }
+
+            // 2. Mapear y pintar los alumnos de esa pestaña concreta
+            filas.forEach(fila => {
+                if (fila.AlumnoNombre) {
+                    const fotoUrl = fila.AlumnoFoto || "https://via.placeholder.com/150";
                     contenedorAlumnos.innerHTML += `
                         <div class="col">
                             <div class="card p-3 text-center student-card h-100" style="background-color: rgba(255,255,255,0.05) !important;">
-                                <img src="${alumno.foto}" alt="${alumno.nombre}" class="rounded-circle mx-auto mb-2 shadow-sm" style="width: 75px; height: 75px; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);">
-                                <h6 class="mb-1 text-white fw-bold">${alumno.nombre}</h6>
-                                <p class="small text-warning mb-3">${alumno.puesto}</p>
-                                <a href="${alumno.foto}" download="${alumno.nombre}.jpg" target="_blank" class="btn btn-sm btn-dark w-100 border-secondary">
-                                    <i class="fas fa-download me-1"></i> Foto
+                                <img src="${fotoUrl}" alt="${fila.AlumnoNombre}" class="rounded-circle mx-auto mb-2 shadow" style="width: 80px; height: 80px; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);">
+                                <h6 class="mb-1 text-white fw-bold">${fila.AlumnoNombre}</h6>
+                                <p class="small text-warning mb-3"><i class="fas fa-music me-1"></i>${fila.AlumnoPuesto || 'Integrante'}</p>
+                                <a href="${fotoUrl}" download="${fila.AlumnoNombre}.jpg" target="_blank" class="btn btn-sm btn-dark w-100 border-secondary">
+                                    <i class="fas fa-download me-1"></i> Descargar Foto
                                 </a>
                             </div>
                         </div>
                     `;
-                });
-            }
+                }
+            });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // FUNCIÓN REGRESAR AL LISTADO PRINCIPAL
         function volverAlInicio() {
             document.getElementById('vista-detalle-colegio').style.display = 'none';
             document.getElementById('contenedor-principal-ranking').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // LÓGICA DE BÚSQUEDA FLUIDA
+        // CONTROLADOR DEL BUSCADOR EN VIVO
         document.getElementById('buscador-colegio').addEventListener('input', function(e){
             const busqueda = e.target.value.toLowerCase();
             const filas = document.querySelectorAll('#tabla-cuerpo-ranking tr');
             filas.forEach(fila => {
-                const textoFila = fila.innerText.toLowerCase();
-                fila.style.display = textoFila.includes(busqueda) ? '' : 'none';
+                fila.style.display = fila.innerText.toLowerCase().includes(busqueda) ? '' : 'none';
             });
         });
-    </script>
 
-    <!-- Bootstrap JS Bundle -->
+        // DISPARAR CARGA AUTOMÁTICA
+        window.onload = function() {
+            cargarLibroDesdeSheets();
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
