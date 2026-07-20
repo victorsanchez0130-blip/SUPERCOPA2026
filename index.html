@@ -39,7 +39,7 @@
             background: rgba(15, 23, 42, 0.4);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
-            padding: 15px 20px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -47,76 +47,83 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .logo { font-size: 20px; font-weight: bold; color: #ffffff; }
-        .btn-login, .btn-logout { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.2s; }
+        .logo { font-size: 18px; font-weight: bold; color: #ffffff; }
+        .btn-login, .btn-logout { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 500; font-size: 13px; transition: background 0.2s; white-space: nowrap; }
         .btn-login:hover { background: var(--primary-hover); }
         .btn-logout { background: #ef4444; display: none; }
 
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        .header-section { text-align: center; margin-bottom: 30px; }
-        .header-section h1 { font-size: 32px; margin-bottom: 8px; color: #ffffff; }
-        .header-section p { color: var(--text-muted); font-size: 15px; }
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+        .header-section { text-align: center; margin-bottom: 20px; }
+        .header-section h1 { font-size: 26px; margin-bottom: 6px; color: #ffffff; }
+        .header-section p { color: var(--text-muted); font-size: 14px; }
 
-        .tabs-container { display: flex; justify-content: center; margin-bottom: 25px; }
-        .tabs { background: rgba(255, 255, 255, 0.1); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); padding: 4px; border-radius: 8px; display: flex; border: 1px solid var(--border); }
-        .tab-btn { background: transparent; border: none; padding: 6px 20px; font-size: 14px; font-weight: 500; color: var(--text-muted); border-radius: 6px; cursor: pointer; }
+        .tabs-container { display: flex; justify-content: center; margin-bottom: 20px; }
+        .tabs { background: rgba(255, 255, 255, 0.1); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); padding: 4px; border-radius: 8px; display: flex; border: 1px solid var(--border); width: 100%; max-width: 400px; }
+        .tab-btn { flex: 1; background: transparent; border: none; padding: 8px 12px; font-size: 13px; font-weight: 500; color: var(--text-muted); border-radius: 6px; cursor: pointer; text-align: center; }
         .tab-btn.active { background: rgba(255, 255, 255, 0.2); color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
-        .stat-icon { font-size: 24px; margin-bottom: 8px; }
-        .stat-number { font-size: 28px; font-weight: bold; color: #ffffff; margin-bottom: 4px; }
-        .stat-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius: 12px; padding: 12px 8px; text-align: center; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
+        .stat-icon { font-size: 20px; margin-bottom: 4px; }
+        .stat-number { font-size: 22px; font-weight: bold; color: #ffffff; margin-bottom: 2px; }
+        .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
 
-        .search-box { width: 100%; padding: 12px 16px; background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color: #ffffff; border-radius: 10px; font-size: 15px; margin-bottom: 20px; outline: none; }
+        .search-box { width: 100%; padding: 12px 16px; background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color: #ffffff; border-radius: 10px; font-size: 14px; margin-bottom: 15px; outline: none; }
         .search-box::placeholder { color: rgba(255, 255, 255, 0.6); }
         .search-box:focus { border-color: var(--primary); }
 
-        .filters { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
-        .filter-btn { background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; color: #ffffff; transition: all 0.2s; }
+        .filters { display: flex; gap: 8px; justify-content: flex-start; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
+        .filters::-webkit-scrollbar { display: none; }
+        .filter-btn { background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; color: #ffffff; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
         .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
         .card { background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); transition: transform 0.2s, border-color 0.2s; position: relative; cursor: pointer; }
         .card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.3); }
-        .card-img-container { height: 200px; background: rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .card-img-container { height: 180px; background: rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .card-img { width: 100%; height: 100%; object-fit: cover; }
         .card-no-img { font-size: 40px; color: #cbd5e1; }
-        .card-content { padding: 20px; }
-        .card-badge { position: absolute; top: 12px; right: 12px; background: var(--primary); color: #ffffff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
-        .card-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; color: #ffffff; }
-        .card-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; }
-        .card-metrics { display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 12px; font-size: 13px; }
+        .card-content { padding: 16px; }
+        .card-badge { position: absolute; top: 10px; right: 10px; background: var(--primary); color: #ffffff; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; }
+        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #ffffff; line-height: 1.3; }
+        .card-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+        .card-metrics { display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 10px; font-size: 12px; }
         .metric-box { flex: 1; }
-        .metric-val { font-weight: bold; color: #ffffff; font-size: 15px; }
-        .no-data { text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--text-muted); font-size: 16px; }
+        .metric-val { font-weight: bold; color: #ffffff; font-size: 14px; }
+        .no-data { text-align: center; grid-column: 1 / -1; padding: 30px; color: var(--text-muted); font-size: 14px; }
 
-        .ranking-container { display: none; background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
-        table { width: 100%; border-collapse: collapse; text-align: left; color: #ffffff; }
-        th, td { padding: 14px 20px; border-bottom: 1px solid var(--border); }
-        th { background: rgba(0, 0, 0, 0.2); font-weight: 600; color: var(--text-muted); font-size: 13px; text-transform: uppercase; }
+        .ranking-container { display: none; background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: var(--glass-blur); border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
+        table { width: 100%; border-collapse: collapse; text-align: left; color: #ffffff; min-width: 500px; }
+        th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+        th { background: rgba(0, 0, 0, 0.2); font-weight: 600; color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
         tr:last-child td { border-bottom: none; }
         .rank-number { font-weight: bold; color: #5c7cfa; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); }
-        .modal-header { margin-bottom: 20px; text-align: center; }
-        .modal-header h2 { font-size: 24px; color: #ffffff; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #94a3b8; }
-        .form-control { width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; outline: none; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
+        .modal-content { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 24px; border-radius: 16px; width: 100%; max-width: 380px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); }
+        .modal-header { margin-bottom: 16px; text-align: center; }
+        .modal-header h2 { font-size: 20px; color: #ffffff; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 500; margin-bottom: 6px; color: #94a3b8; }
+        .form-control { width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; outline: none; font-size: 14px; }
         .form-control:focus { border-color: var(--primary); }
-        .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+        .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 8px; font-size: 14px; }
         .btn-close { background: none; border: none; color: var(--text-muted); float: right; cursor: pointer; font-size: 18px; }
-        .admin-banner { display: none; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px; border-radius: 8px; margin-bottom: 25px; font-size: 14px; text-align: center; }
+        .admin-banner { display: none; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; text-align: center; }
 
-        @media(max-width: 768px) { .stats-grid { grid-template-columns: 1fr; gap: 12px; } }
+        @media(max-width: 480px) { 
+            .cards-grid { grid-template-columns: 1fr; }
+            .header-section h1 { font-size: 22px; }
+            .stat-number { font-size: 18px; }
+            .stat-label { font-size: 9px; }
+            .filters { justify-content: flex-start; }
+        }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">🏆 Supercopa Bandas</div>
+        <div class="logo">🏆 Supercopa</div>
         <button class="btn-login" id="loginBtn" onclick="openModal()">Iniciar Sesión</button>
         <button class="btn-logout" id="logoutBtn" onclick="logout()">Cerrar Sesión</button>
     </nav>
@@ -147,16 +154,16 @@
             <div class="stat-card">
                 <div class="stat-icon">🎷</div>
                 <div class="stat-number" id="statAlumnos">0</div>
-                <div class="stat-label">Alumnos Totales</div>
+                <div class="stat-label">Alumnos</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">⭐</div>
                 <div class="stat-number" id="statPuntos">0</div>
-                <div class="stat-label">Puntos Totales</div>
+                <div class="stat-label">Puntos</div>
             </div>
         </div>
 
-        <input type="text" class="search-box" id="searchInp" placeholder="Buscar por nombre de colegio o docente..." oninput="filterData()">
+        <input type="text" class="search-box" id="searchInp" placeholder="Buscar por colegio o docente..." oninput="filterData()">
         
         <div class="filters">
             <button class="filter-btn active" onclick="filterCategory('TODOS', this)">Todos</button>
@@ -173,12 +180,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Puesto</th>
+                        <th>#</th>
                         <th>Colegio</th>
                         <th>Docente</th>
-                        <th>Categoría</th>
-                        <th>Alumnos</th>
-                        <th>Puntos</th>
+                        <th>Cat.</th>
+                        <th>Alum.</th>
+                        <th>Pts.</th>
                     </tr>
                 </thead>
                 <tbody id="rankingTableBody"></tbody>
@@ -299,7 +306,6 @@
                     const card = document.createElement('div');
                     card.className = "card";
                     
-                    // CORRECCIÓN AQUÍ: Ahora se envía también la categoría y los puntos por la URL
                     card.onclick = function() {
                         const urlDetalle = `detalle_colegio.html?colegio=${encodeURIComponent(item.colegio)}&docente=${encodeURIComponent(item.docente)}&categoria=${encodeURIComponent(item.categoria)}&puntos=${encodeURIComponent(item.puntos)}`;
                         window.open(urlDetalle, '_blank'); 
@@ -315,11 +321,11 @@
                             <div class="card-metrics">
                                 <div class="metric-box">
                                     <div class="metric-val">${item.alumnos}</div>
-                                    <div style="color:var(--text-muted); font-size:11px;">Alumnos</div>
+                                    <div style="color:var(--text-muted); font-size:10px;">Alumnos</div>
                                 </div>
                                 <div class="metric-box" style="text-align:right;">
                                     <div class="metric-val" style="color:var(--primary);">${item.puntos} pts</div>
-                                    <div style="color:var(--text-muted); font-size:11px;">Puntaje</div>
+                                    <div style="color:var(--text-muted); font-size:10px;">Puntaje</div>
                                 </div>
                             </div>
                         </div>
@@ -338,7 +344,7 @@
                         <td class="rank-number">#${index + 1}</td>
                         <td style="font-weight:600;">${item.colegio}</td>
                         <td>${item.docente}</td>
-                        <td><span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:8px; font-size:12px;">${item.categoria}</span></td>
+                        <td><span style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:6px; font-size:11px;">${item.categoria}</span></td>
                         <td>${item.alumnos}</td>
                         <td style="font-weight:bold; color:var(--primary);">${item.puntos} pts</td>
                     `;
