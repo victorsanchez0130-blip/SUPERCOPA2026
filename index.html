@@ -58,7 +58,7 @@
         .header-section p { color: var(--text-muted); font-size: 14px; }
 
         .tabs-container { display: flex; justify-content: center; margin-bottom: 20px; }
-        .tabs { background: rgba(255, 255, 255, 0.1); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); padding: 4px; border-radius: 8px; display: flex; border: 1px solid var(--border); width: 100%; max-width: 400px; }
+        .tabs { background: rgba(255, 255, 255, 0.1); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); padding: 4px; border-radius: 8px; display: flex; border: 1px solid var(--border); width: 100%; max-width: 500px; }
         .tab-btn { flex: 1; background: transparent; border: none; padding: 8px 12px; font-size: 13px; font-weight: 500; color: var(--text-muted); border-radius: 6px; cursor: pointer; text-align: center; }
         .tab-btn.active { background: rgba(255, 255, 255, 0.2); color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
@@ -99,6 +99,10 @@
         tr:last-child td { border-bottom: none; }
         .rank-number { font-weight: bold; color: #5c7cfa; }
 
+        /* Estilos de la vista del Equipo Multimedia */
+        .media-container { display: none; }
+        .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
         .modal-content { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 24px; border-radius: 16px; width: 100%; max-width: 380px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); }
         .modal-header { margin-bottom: 16px; text-align: center; }
@@ -130,7 +134,7 @@
 
     <div class="container">
         <div class="admin-banner" id="adminBanner">
-            🔒 Modo Administrador Activo. Los cambios deben realizarse directamente en tu Google Sheets vinculado.
+            🔒 Modo Administrador / Prensa Activo. Los cambios deben realizarse directamente en tu Google Sheets vinculado.
         </div>
 
         <div class="header-section">
@@ -142,6 +146,7 @@
             <div class="tabs">
                 <button class="tab-btn active" id="tabGrid" onclick="switchTab('grid')">👤 Vista General</button>
                 <button class="tab-btn" id="tabRank" onclick="switchTab('rank')">🏅 Ranking</button>
+                <button class="tab-btn" id="tabMedia" onclick="switchTab('media')">📸 Prensa & Media</button>
             </div>
         </div>
 
@@ -165,7 +170,7 @@
 
         <input type="text" class="search-box" id="searchInp" placeholder="Buscar por colegio o docente..." oninput="filterData()">
         
-        <div class="filters">
+        <div class="filters" id="categoriesFilter">
             <button class="filter-btn active" onclick="filterCategory('TODOS', this)">Todos</button>
             <button class="filter-btn" onclick="filterCategory('A', this)">Categoría A</button>
             <button class="filter-btn" onclick="filterCategory('B', this)">Categoría B</button>
@@ -191,6 +196,11 @@
                 <tbody id="rankingTableBody"></tbody>
             </table>
         </div>
+
+        <!-- Vista del Equipo de Grabación y Fotografía -->
+        <div class="media-container" id="mediaView">
+            <div class="media-grid" id="mediaGrid"></div>
+        </div>
     </div>
 
     <div class="modal" id="loginModal">
@@ -198,7 +208,7 @@
             <button class="btn-close" onclick="closeModal()">✕</button>
             <div class="modal-header">
                 <h2>Iniciar Sesión</h2>
-                <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Panel de Administración Supercopa</p>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Panel de Administración y Prensa Supercopa</p>
             </div>
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
@@ -216,6 +226,39 @@
 
     <script>
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPc_P4Uly92gJj0ptyCf_MV8E1lXZRHRL9HqQWa_r6nauH9r-STNqyON9qeygKj-f4dLaaSsq6ZJlc/pub?output=csv";
+
+        // Usuarios del sistema (Administrador + 3 Encargados de Grabación y Fotografía)
+        const systemUsers = [
+            { email: "admin@supercopa.com", pass: "123456", nombre: "Administrador General", rol: "Administrador" },
+            { email: "fotografia@supercopa.com", pass: "foto2026", nombre: "Carlos Mendoza", rol: "Fotógrafo Oficial" },
+            { email: "video@supercopa.com", pass: "video2026", nombre: "Sofía Ramírez", rol: "Camarógrafa / Edición" },
+            { email: "dron@supercopa.com", pass: "dron2026", nombre: "Diego Torres", rol: "Operador de Dron y Grabación" }
+        ];
+
+        // Lista de Encargados de Grabación y Fotografía para mostrar en el Panel
+        const equipoMedia = [
+            {
+                nombre: "Carlos Mendoza",
+                rol: "Fotógrafo Oficial de Eventos",
+                especialidad: "Fotografía de Acción y Retratos",
+                email: "fotografia@supercopa.com",
+                foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80"
+            },
+            {
+                nombre: "Sofía Ramírez",
+                rol: "Encargada de Grabación y Video",
+                especialidad: "Cobertura de Bandas & Edición HQ",
+                email: "video@supercopa.com",
+                foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80"
+            },
+            {
+                nombre: "Diego Torres",
+                rol: "Operador de Dron y Tomas Aéreas",
+                especialidad: "Transmisiones en Vivo & Aéreos",
+                email: "dron@supercopa.com",
+                foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80"
+            }
+        ];
 
         const backupData = [
             {"colegio": "I.E. NAMORA", "docente": "JHON ALVARADO", "foto": "https://i.postimg.cc/dV48hzwp/JA.jpg", "categoria": "B", "alumnos": 0, "puntos": 35},
@@ -277,6 +320,7 @@
                 currentData = [...backupData];
             }
             render();
+            renderMedia();
         }
 
         function calculateStats(data) {
@@ -353,6 +397,31 @@
             }
         }
 
+        // Renderiza las tarjetas del equipo de grabación y fotografía
+        function renderMedia() {
+            const mediaGrid = document.getElementById('mediaGrid');
+            if(!mediaGrid) return;
+            mediaGrid.innerHTML = "";
+
+            equipoMedia.forEach(persona => {
+                const card = document.createElement('div');
+                card.className = "card";
+                card.innerHTML = `
+                    <div class="card-badge">PRENSA</div>
+                    <div class="card-img-container">
+                        <img src="${persona.foto}" class="card-img" alt="${persona.nombre}">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${persona.nombre}</div>
+                        <div class="card-sub" style="color: var(--primary); font-weight:600;">${persona.rol}</div>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">📷 ${persona.especialidad}</p>
+                        <p style="font-size:11px; color:var(--text-muted);">📧 ${persona.email}</p>
+                    </div>
+                `;
+                mediaGrid.appendChild(card);
+            });
+        }
+
         function filterData() {
             filterText = document.getElementById('searchInp').value.toLowerCase();
             render();
@@ -368,8 +437,15 @@
         function switchTab(tab) {
             document.getElementById('tabGrid').classList.toggle('active', tab === 'grid');
             document.getElementById('tabRank').classList.toggle('active', tab === 'rank');
+            document.getElementById('tabMedia').classList.toggle('active', tab === 'media');
+
             document.getElementById('cardsGrid').style.display = tab === 'grid' ? 'grid' : 'none';
             document.getElementById('rankingView').style.display = tab === 'rank' ? 'block' : 'none';
+            document.getElementById('mediaView').style.display = tab === 'media' ? 'block' : 'none';
+
+            // Ocultar buscador y filtros en la pestaña de Prensa
+            document.getElementById('searchInp').style.display = tab === 'media' ? 'none' : 'block';
+            document.getElementById('categoriesFilter').style.display = tab === 'media' ? 'none' : 'flex';
         }
 
         function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
@@ -377,10 +453,16 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            const user = document.getElementById('userInp').value;
-            const pass = document.getElementById('passInp').value;
-            if(user === "admin@supercopa.com" && pass === "123456") {
+            const user = document.getElementById('userInp').value.trim();
+            const pass = document.getElementById('passInp').value.trim();
+            
+            // Validación con el sistema de usuarios (Admin + 3 Encargados de Prensa/Media)
+            const matchedUser = systemUsers.find(u => u.email === user && u.pass === pass);
+
+            if(matchedUser) {
                 localStorage.setItem('admin_session', 'true');
+                localStorage.setItem('user_name', matchedUser.nombre);
+                localStorage.setItem('user_role', matchedUser.rol);
                 checkSession();
                 closeModal();
             } else {
@@ -390,12 +472,28 @@
 
         function checkSession() {
             const isLogged = localStorage.getItem('admin_session') === 'true';
+            const userName = localStorage.getItem('user_name') || 'Usuario';
+            const userRole = localStorage.getItem('user_role') || 'Admin';
+
             document.getElementById('loginBtn').style.display = isLogged ? 'none' : 'block';
             document.getElementById('logoutBtn').style.display = isLogged ? 'block' : 'none';
-            document.getElementById('adminBanner').style.display = isLogged ? 'block' : 'none';
+            
+            const banner = document.getElementById('adminBanner');
+            if (isLogged) {
+                banner.style.display = 'block';
+                banner.innerHTML = `🔒 Sesión iniciada como: <strong>${userName}</strong> (${userRole}). Los cambios deben realizarse directamente en tu Google Sheets vinculado.`;
+            } else {
+                banner.style.display = 'none';
+            }
         }
 
-        function logout() { localStorage.removeItem('admin_session'); checkSession(); }
+        function logout() { 
+            localStorage.removeItem('admin_session'); 
+            localStorage.removeItem('user_name');
+            localStorage.removeItem('user_role');
+            checkSession(); 
+        }
+
         window.onload = () => { loadData(); checkSession(); };
     </script>
 </body>
