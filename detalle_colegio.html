@@ -220,7 +220,7 @@
             if (cleanUrl.includes('drive.google.com')) {
                 const idMatch = cleanUrl.match(/\/d\/([^\/]+)/) || cleanUrl.match(/id=([^&]+)/);
                 if (idMatch && idMatch[1]) {
-                    return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+                    return "https://lh3.googleusercontent.com/d/" + idMatch[1];
                 }
             }
             return cleanUrl;
@@ -233,14 +233,14 @@
                 let c = text[i];
                 if (c === '"') {
                     q = !q;
-                } else if (c === ',' && !q) {
-                    r.push(p.trim());
+                } else if ((c === ',' || c === ';') && !q) {
+                    r.push(p.trim().replace(/^"|"$/g, ''));
                     p = '';
                 } else {
                     p += c;
                 }
             }
-            r.push(p.trim());
+            r.push(p.trim().replace(/^"|"$/g, ''));
             return r;
         }
 
@@ -305,21 +305,23 @@
 
                     const cols = parseCSVLine(lines[i]);
 
-                    // Adaptado según las columnas típicas del CSV de Google Sheets
-                    const sheetColegio = cols[0] || "";
-                    const sheetNombre = cols[2] || cols[1] || "Alumno sin nombre";
-                    const sheetInstrumento = cols[3] || "No especificado";
-                    const sheetFotoRaw = cols[4] || "#";
-                    const sheetFoto = fixImageUrl(sheetFotoRaw);
+                    // Detección flexible: Se busca en todas las columnas el nombre del colegio
+                    const perteneceAlColegio = cols.some(col => cleanText(col) === targetColegio);
 
-                    if (cleanText(sheetColegio) === targetColegio) {
+                    if (perteneceAlColegio) {
+                        // Mapeo seguro de columnas
+                        const sheetNombre = cols[2] || cols[1] || "Alumno sin nombre";
+                        const sheetInstrumento = cols[3] || "No especificado";
+                        const sheetFotoRaw = cols[4] || cols[3] || "#";
+                        const sheetFoto = fixImageUrl(sheetFotoRaw);
+
                         htmlContent += `
                             <tr>
                                 <td class="student-num">${contador}</td>
                                 <td style="font-weight: 500;">${sheetNombre}</td>
                                 <td>${sheetInstrumento}</td>
                                 <td style="text-align: center;">
-                                    ${sheetFoto !== "#" ? `<a href="${sheetFoto}" target="_blank" class="btn-download">📥 Ver Carnet</a>` : `<span style="color:var(--text-muted); font-size:12px;">Sin Foto</span>`}
+                                    ${sheetFoto.startsWith('http') ? `<a href="${sheetFoto}" target="_blank" class="btn-download">📥 Ver Carnet</a>` : `<span style="color:var(--text-muted); font-size:12px;">Sin Foto</span>`}
                                 </td>
                             </tr>
                         `;
