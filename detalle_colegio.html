@@ -36,7 +36,6 @@
 
         .container {
             width: 100%;
-            max-width: 750px;
             max-width: 800px;
         }
 
@@ -54,28 +53,21 @@
 
         /* ÍCONO / LOGO AGRANDADO */
         .icon-shield { 
-            font-size: 60px; 
-            margin-bottom: 20px; 
             font-size: 110px; 
             margin-bottom: 25px; 
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 90px;
             min-height: 220px;
         }
 
         /* LOGO DEL COLEGIO MÁS GRANDE */
         .school-logo {
-            max-width: 110px;
-            max-height: 110px;
             max-width: 220px;
             max-height: 220px;
             width: auto;
             height: auto;
             object-fit: contain;
-            border-radius: 12px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
             border-radius: 16px;
             filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
             background: rgba(255, 255, 255, 0.05);
@@ -83,8 +75,6 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        h1 { font-size: 28px; margin-bottom: 10px; color: #ffffff; letter-spacing: 0.5px; }
-        .docente-name { font-size: 18px; color: var(--primary); font-weight: 600; margin-bottom: 30px; }
         h1 { font-size: 32px; margin-bottom: 10px; color: #ffffff; letter-spacing: 0.5px; }
         .docente-name { font-size: 20px; color: var(--primary); font-weight: 600; margin-bottom: 30px; }
 
@@ -98,14 +88,11 @@
 
         .detail-box {
             background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
             padding: 18px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .detail-label { font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
-        .detail-value { font-size: 20px; font-weight: bold; color: #ffffff; }
         .detail-label { font-size: 13px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
         .detail-value { font-size: 22px; font-weight: bold; color: #ffffff; }
 
@@ -132,7 +119,6 @@
         }
 
         .students-table { width: 100%; border-collapse: collapse; text-align: left; }
-        .students-table th, .students-table td { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
         .students-table th, .students-table td { padding: 14px 15px; border-bottom: 1px solid var(--border); font-size: 15px; }
         .students-table th { background: rgba(0, 0, 0, 0.3); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; }
         .students-table tr:last-child td { border-bottom: none; }
@@ -142,23 +128,18 @@
             background: rgba(99, 102, 241, 0.2);
             color: #a5b4fc;
             border: 1px solid rgba(99, 102, 241, 0.4);
-            padding: 6px 12px;
-            border-radius: 6px;
             padding: 8px 14px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 12px;
             font-size: 13px;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
             gap: 6px;
             transition: all 0.2s;
         }
         .btn-download:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .no-students { text-align: center; padding: 20px; color: var(--text-muted); font-style: italic; }
         .no-students { text-align: center; padding: 25px; color: var(--text-muted); font-style: italic; }
 
         .actions { text-align: center; }
@@ -211,10 +192,10 @@
     </div>
 
     <script>
-        // Enlace CSV de la pestaña de Alumnos
+        // Enlace CSV proporcionado de la pestaña de Alumnos
         const URL_SHEETS_ALUMNOS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR_DY7IP73Oh_vzcPGqQ_fLiv2RFOlH1XK-IPIcrDV3pM9wHodMC3zh3or3LYm6TEKTHPHGGD0TRstV/pub?output=csv";
         
-        // Enlace CSV de la pestaña de Colegios (obtenido de tu enlace proporcionado)
+        // Enlace CSV para consultar colegios
         const URL_SHEETS_COLEGIOS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRUG5hRy0_f9-agtpJK87yq3NMf06aJ2C4W0WYqhMiBbXPi-ylFTxfmOHII4Mbm8f8_RBmBBmPc_XoM/pub?output=csv";
 
         function getUrlParams() {
@@ -236,14 +217,14 @@
                 .replace(/[^a-z0-9]/g, "");
         }
 
-        // Convertir enlaces de Google Drive a URLs de vista directa
+        // Convertir enlaces de Google Drive a URLs directas e inmunes a bloqueo
         function fixImageUrl(url) {
             if (!url) return '';
             let cleanUrl = url.trim();
             if (cleanUrl.includes('drive.google.com')) {
                 const idMatch = cleanUrl.match(/\/d\/([^\/]+)/) || cleanUrl.match(/id=([^&]+)/);
                 if (idMatch && idMatch[1]) {
-                    return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+                    return "https://lh3.googleusercontent.com/d/" + idMatch[1];
                 }
             }
             return cleanUrl;
@@ -270,11 +251,10 @@
         async function cargarLogoColegio(nombreColegio, fotoUrlDirecta) {
             const containerLogo = document.getElementById('containerLogo');
 
-            // Si la foto vino por la URL del navegador
+            // Si la foto vino directamente por la URL del navegador
             if (fotoUrlDirecta && fotoUrlDirecta.startsWith('http')) {
-                containerLogo.innerHTML = `<img src="${fotoUrlDirecta}" class="school-logo" alt="Logo ${nombreColegio}">`;
                 const imgUrl = fixImageUrl(fotoUrlDirecta);
-                containerLogo.innerHTML = `<img src="${imgUrl}" class="school-logo" alt="Logo" onerror="this.onerror=null; this.parentElement.innerHTML='🏫';">`;
+                containerLogo.innerHTML = '<img src="' + imgUrl + '" class="school-logo" alt="Logo" onerror="this.onerror=null; this.parentElement.innerHTML=\'🏫\';">';
                 return;
             }
 
@@ -284,7 +264,6 @@
                 const dataText = await response.text();
                 const lines = dataText.split(/\r?\n/);
 
-                let logoEncontrado = false;
                 let logoEncontrado = "";
                 const targetColegio = cleanText(nombreColegio);
 
@@ -292,15 +271,7 @@
                     if (!lines[i].trim()) continue;
                     const cols = parseCSVLine(lines[i]);
                     
-                    const sheetColegio = cols[0] || "";
-                    const sheetLogo = cols.find(col => col.startsWith("http://") || col.startsWith("https://")) || "";
-
-                    if (sheetColegio.toLowerCase() === nombreColegio.toLowerCase() && sheetLogo !== "") {
-                        containerLogo.innerHTML = `<img src="${sheetLogo}" class="school-logo" alt="Logo ${nombreColegio}">`;
-                        logoEncontrado = true;
-                        break;
                     const coincide = cols.some(col => cleanText(col) === targetColegio);
-
                     if (coincide) {
                         const urlCol = cols.find(c => c.toLowerCase().includes('http://') || c.toLowerCase().includes('https://'));
                         if (urlCol) {
@@ -310,14 +281,12 @@
                     }
                 }
 
-                if (!logoEncontrado) {
                 if (logoEncontrado) {
-                    containerLogo.innerHTML = `<img src="${logoEncontrado}" class="school-logo" alt="Logo ${nombreColegio}" onerror="this.onerror=null; this.parentElement.innerHTML='🏫';">`;
+                    containerLogo.innerHTML = '<img src="' + logoEncontrado + '" class="school-logo" alt="Logo ' + nombreColegio + '" onerror="this.onerror=null; this.parentElement.innerHTML=\'🏫\';">';
                 } else {
                     containerLogo.innerHTML = "🏫";
                 }
             } catch (error) {
-                console.warn("No se pudo cargar el logo desde Sheets:", error);
                 console.warn("Error cargando el logo desde Google Sheets:", error);
                 containerLogo.innerHTML = "🏫";
             }
@@ -341,39 +310,32 @@
                     const cols = parseCSVLine(lines[i]);
 
                     const sheetColegio = cols[0] || "";
-                    const sheetNombre = cols[2] || "";
-                    const sheetInstrumento = cols[3] || "";
-                    const sheetFoto = cols[4] || "#";
+                    const sheetNombre = cols[2] || cols[1] || "Sin nombre";
+                    const sheetInstrumento = cols[3] || "Por definir";
                     const sheetFoto = fixImageUrl(cols[4] || "#");
 
-                    if (sheetColegio.toLowerCase() === nombreColegio.toLowerCase()) {
                     if (cleanText(sheetColegio) === targetColegio) {
-                        htmlContent += `
-                            <tr>
-                                <td class="student-num">${contador}</td>
-                                <td style="font-weight: 500;">${sheetNombre}</td>
-                                <td>${sheetInstrumento}</td>
-                                <td style="text-align: center;">
-                                    <a href="${sheetFoto}" download="${sheetNombre.replace(/\s+/g, '_')}.jpg" target="_blank" class="btn-download">
-                                        📥 Descargar Carnet
-                                    </a>
-                                </td>
-                            </tr>
-                        `;
+                        htmlContent += '<tr>' +
+                            '<td class="student-num">' + contador + '</td>' +
+                            '<td style="font-weight: 500;">' + sheetNombre + '</td>' +
+                            '<td>' + sheetInstrumento + '</td>' +
+                            '<td style="text-align: center;">' +
+                                '<a href="' + sheetFoto + '" target="_blank" class="btn-download">📥 Ver Carnet</a>' +
+                            '</td>' +
+                        '</tr>';
                         contador++;
                     }
                 }
 
                 if (htmlContent === "") {
-                    tbody.innerHTML = `<tr><td colspan="4" class="no-students">No hay alumnos registrados aún para este colegio en la pestaña seleccionada.</td></tr>`;
+                    tbody.innerHTML = '<tr><td colspan="4" class="no-students">No hay alumnos registrados aún para este colegio.</td></tr>';
                 } else {
                     tbody.innerHTML = htmlContent;
                 }
 
             } catch (error) {
                 console.error(error);
-                tbody.innerHTML = `<tr><td colspan="4" class="no-students" style="color:#ef4444;">Error al conectar con Google Sheets. Asegúrate de haber publicado la pestaña correcta de Alumnos.</td></tr>`;
-                tbody.innerHTML = `<tr><td colspan="4" class="no-students" style="color:#ef4444;">Error al conectar con Google Sheets.</td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="4" class="no-students" style="color:#ef4444;">Error al conectar con Google Sheets. Verifica que el archivo CSV sea accesible.</td></tr>';
             }
         }
 
@@ -381,7 +343,6 @@
             const datos = getUrlParams();
 
             const txtColegio = decodeURIComponent(datos.colegio);
-            document.getElementById('lblColegio').innerText = txtColegio;
             document.getElementById('lblColegio').innerText = txtColegio || "Colegio Sin Nombre";
             document.getElementById('lblDocente').innerText = "Prof. " + decodeURIComponent(datos.docente);
             document.getElementById('lblCategoria').innerText = "Categoría " + decodeURIComponent(datos.categoria);
@@ -390,6 +351,8 @@
             if (txtColegio) {
                 cargarLogoColegio(txtColegio, datos.foto);
                 cargarAlumnosDesdeSheets(txtColegio);
+            } else {
+                document.getElementById('studentsTableBody').innerHTML = '<tr><td colspan="4" class="no-students">No se especificó un colegio en la URL.</td></tr>';
             }
         };
     </script>
